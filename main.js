@@ -3,7 +3,7 @@ const ChildProcess = require('child_process');
 
 const expand_home_dir = require('expand-home-dir')
 const Discord = require('discord.js');
-
+const chardet = require('chardet');
 
 const config_path = expand_home_dir('~/discord.json')
 const config = JSON.parse(fs.readFileSync(config_path))
@@ -17,8 +17,19 @@ function send_message_loop() {
     if (!channel)
       return;
 
-    const result = ChildProcess.spawnSync('fortune', [], { encoding : 'utf8' });
-    channel.send('```\n' + result.output[1] + '\n```');
+    // const result = ChildProcess.spawnSync('fortune', [], { encoding : 'utf8' });
+    result = {
+      output: [null, 'käyttö']
+    }
+    // const result = {
+    //   output: [null, 'k�ytt�']
+    // }
+
+    const encoding = chardet.detect(Buffer.from(result.output[1]));
+
+    debugger
+
+    // channel.send('```\n' + result.output[1] + '\n```');
   })
 
   setTimeout(send_message_loop, 1000 * 60 * 60 * 24);
