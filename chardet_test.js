@@ -1,11 +1,13 @@
-var Iconv = require('iconv').Iconv;
-var fs = require('fs');
+const fs = require('fs');
+
+const chardet = require('chardet');
+const Iconv = require('iconv').Iconv;
 
 function readFileSyncGuessEncoding(path) {
   const encoding = chardet.detectFileSync(path)
-  var content = fs.readFileSync(path);
-  var iconv = new Iconv(encoding, 'UTF-8');
-  var buffer = iconv.convert(content);
+  const content = fs.readFileSync(path);
+  const iconv = new Iconv(encoding, 'UTF-8');
+  const buffer = iconv.convert(content);
   return buffer.toString('utf8');
 }
 
