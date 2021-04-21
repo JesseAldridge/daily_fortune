@@ -30,7 +30,7 @@ async def on_message(message):
 
   if message.content.strip().endswith('?'):
     await answer_question(message)
-  elif random.random() < .2:
+  elif random.random() < .5:
     await chime_in(recent_messages, message)
 
 async def answer_question(message):
@@ -61,7 +61,12 @@ async def chime_in(recent_messages, message):
     presence_penalty=0.6,
     stop=["\n"]
   )
-  await message.channel.send(response.choices[0].text)
+
+  print('response:', response)
+
+  response_text = response.choices[0].text
+  if response_text:
+    await message.channel.send(response_text)
 
 
 client.run(discord_config['bot_token'])
