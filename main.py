@@ -18,8 +18,8 @@ class g:
 async def on_message(message):
   print('on message')
 
-  if message.author == client.user:
-    return
+  # if message.author == client.user:
+  #   return
 
   recent_messages = g.recent_messages
   recent_messages.append(message.content)
