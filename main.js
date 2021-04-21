@@ -12,27 +12,24 @@ const config = JSON.parse(fs.readFileSync(config_path))
 
 const client = new Discord.Client();
 
-function send_message_loop() {
-  client.guilds.cache.forEach((guild) => {
-    const channel = guild.channels.cache.find(ch => ch.name === 'general');
-    // Do nothing if the channel wasn't found on this server
-    if (!channel)
-      return;
-
-    const result = ChildProcess.spawnSync('fortune', []);
-    const raw_buffer = result.output[1];
-    const encoding = chardet.detect(raw_buffer);
-    const converter = new iconv.Iconv(encoding, 'UTF-8');
-    const utf8_buffer = converter.convert(raw_buffer);
-    channel.send('```\n' + utf8_buffer + '\n```');
-  })
-
-  setTimeout(send_message_loop, 1000 * 60 * 60 * 24);
-}
-
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
   send_message_loop();
 });
+
+
+client.on('message', msg => {
+  response = openai.Completion.create(
+    engine="davinci",
+    prompt=msg.content,
+    temperature=0.9,
+    max_tokens=150,
+    top_p=1,
+    frequency_penalty=0.0,
+    presence_penalty=0.6,
+    // stop=["\n", " Human:", " AI:"]
+  )
+});
+
 
 client.login(config.bot_token);
