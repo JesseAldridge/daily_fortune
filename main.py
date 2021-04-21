@@ -30,7 +30,7 @@ async def on_message(message):
 
   if message.content.strip().endswith('?'):
     await answer_question(message)
-  elif random.random() < .5:
+  elif random.random() < .2:
     await chime_in(recent_messages, message)
 
 async def answer_question(message):
