@@ -36,8 +36,6 @@ async def on_message(message):
 async def answer_question(message):
   prompt_str = f'{PROMPT_QA}\nQ: {message.content}\nA:'
 
-  print('prompt:', prompt_str)
-
   response = openai.Completion.create(
     engine="davinci",
     prompt=prompt_str,
