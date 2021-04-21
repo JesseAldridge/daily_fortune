@@ -55,7 +55,7 @@ async def chime_in(recent_messages, message):
     engine="davinci",
     prompt='\n'.join(recent_messages),
     temperature=0.9,
-    max_tokens=20,
+    max_tokens=40,
     top_p=1,
     frequency_penalty=0.0,
     presence_penalty=0.6,
