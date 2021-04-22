@@ -30,8 +30,11 @@ async def on_message(message):
 
   if message.content.strip().endswith('?'):
     await answer_question(message)
-  elif random.random() < .3:
-    await chime_in(recent_messages, message)
+  else:
+    roll = random.random()
+    print('roll:', roll)
+    if roll < .4:
+      await chime_in(recent_messages, message)
 
 async def answer_question(message):
   prompt_str = f'{PROMPT_QA}\nQ: {message.content}\nA:'
