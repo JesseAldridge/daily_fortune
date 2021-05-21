@@ -59,7 +59,11 @@ async def on_message(message):
 
   # if message.content.strip().endswith('?'):
   #   await answer_question(message)
-  if message.content == ',clear messages':
+  if message.content == ',help':
+    await admin_message_(
+      'the commmands are: `,clear messages`, `,set name <name>`, and `,set chime in rate <rate>`'
+    )
+  elif message.content == ',clear messages':
     g.recent_messages = []
     await admin_message_(f'recent messages cleared')
   elif message.content.startswith(',set name'):
