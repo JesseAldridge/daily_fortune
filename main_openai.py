@@ -60,9 +60,7 @@ async def on_message(message):
   # if message.content.strip().endswith('?'):
   #   await answer_question(message)
   if message.content == ',help':
-    await admin_message_(
-      'the commmands are: `,clear messages`, `,set name <name>`, and `,set chime in rate <rate>`'
-    )
+    await admin_message_('```,clear messages\n,set name <name>\n,set chime in rate <rate>```')
   elif message.content == ',clear messages':
     g.recent_messages = []
     reset_personality(bot_name, recent_messages)
