@@ -36,7 +36,7 @@ async def on_ready(*a, **kw):
     print('guild:', guild)
     for category_channel in guild.channels:
       print('category channel:', category_channel)
-      for channel in category_channel:
+      for channel in category_channel.channels:
         print('channel:', channel)
         admin_message(channel, '*bot rebooted*')
 
