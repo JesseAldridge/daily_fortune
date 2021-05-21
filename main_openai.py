@@ -81,7 +81,7 @@ async def on_message(message):
     roll = random.random()
     print('roll:', roll)
     if roll < g.chime_in_rate:
-      await chime_in(channel, recent_messages, message)
+      await chime_in(message.channel, recent_messages, message)
 
 async def answer_question(message):
   prompt_str = f'{PROMPT_QA}\nQ: {message.content}\nA:'
