@@ -41,7 +41,7 @@ async def on_ready(*a, **kw):
 
 @client.event
 async def on_message(message):
-  print('on message')
+  print('on message:', message)
 
   async def admin_message_(msg_str):
     await admin_message(message.channel, msg_str)
@@ -68,7 +68,7 @@ async def on_message(message):
     is_found = False
     if bot_name in PERSONALITY_TO_MESSAGE:
       is_found = True
-      g.recent_messages.append(f'{g.bot_name}: {PERSONALITY_TO_MESSAGE[bot_name]}')
+      recent_messages.append(f'{g.bot_name}: {PERSONALITY_TO_MESSAGE[bot_name]}')
     await admin_message_(f'set bot name to {g.bot_name}; personality found: {is_found}')
   elif message.content.startswith(',set chime in rate'):
     try:
@@ -125,7 +125,7 @@ async def chime_in(channel, recent_messages, message):
 
   response_text = response.choices[0].text
   if response_text:
-    await admin_message(channel, response_text)
+    await channel.send(response_text)
 
 async def admin_message(channel, msg):
   await channel.send(f'admin: *{msg}*')
