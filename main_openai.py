@@ -25,7 +25,7 @@ async def on_message(message):
     return
 
   recent_messages = g.recent_messages
-  recent_messages.append(message.content)
+  recent_messages.append(f'{message.author}: {message.content}')
   recent_messages = recent_messages[-10:]
 
   if message.content.strip().endswith('?'):
