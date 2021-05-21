@@ -1,4 +1,4 @@
-import os, json, random
+import os, json, random, glob
 
 import discord, openai
 
@@ -13,6 +13,12 @@ with open(os.path.expanduser('~/open_ai.json')) as f:
 
 with open('prompt_qa.txt') as f:
   PROMPT_QA = f.read()
+
+PERSONALITY_TO_MESSAGE = {}
+for path in glob.glob(os.path.join('personalities/*.txt')):
+  with open(path) as f:
+    personality_name = os.splitext(os.path.basename(path))[0]
+    PERSONALITY_TO_MESSAGE[personality_name] = f.read()
 
 class g:
   recent_messages = []
@@ -33,10 +39,13 @@ async def on_message(message):
 
   if message.content.strip().endswith('?'):
     await answer_question(message)
-  elif message.content == '_reboot':
+  elif message.content == ',reboot':
     g.recent_messages = []
-  elif message.content.startswith('_set_name'):
-    g.bot_name = message.content.split()[-1]
+  elif message.content.startswith(',setname'):
+    bot_name = message.content.split()[-1]
+    g.bot_name = f'{bot_name}#{int(random.random() * 1000)}'
+    if bot_name in PERSONALITY_TO_MESSAGE:
+      g.recent_messages.append(f'{g.bot_name}: {PERSONALITY_TO_MESSAGE[bot_name]}')
   else:
     roll = random.random()
     print('roll:', roll)
