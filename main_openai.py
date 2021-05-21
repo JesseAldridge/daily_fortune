@@ -32,9 +32,11 @@ g.recent_messages.append(f'{g.bot_name}: {PERSONALITY_TO_MESSAGE[DEFAULT_BOT_NAM
 @client.event
 async def on_ready(*a, **kw):
   print('on ready:', a, kw)
-  for channel in client.channels:
-    print('channel:', channel)
-    await client.send_message(channel, "*bot rebooted*")
+  for guild in client.guilds:
+    print('guild:', guild)
+    for channel in client.channels:
+      print('channel:', channel)
+      await client.send_message(channel, "*bot rebooted*")
 
 @client.event
 async def on_message(message):
