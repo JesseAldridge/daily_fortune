@@ -61,7 +61,7 @@ async def chime_in(recent_messages, message):
   recent_bot_messages = []
   for message_str in recent_messages:
     if message_str.startswith(BOT_NAME):
-      recent_messages.append(message_str)
+      recent_bot_messages.append(message_str)
 
   if(len(recent_bot_messages) >= 3 and
      recent_bot_messages[-1] == recent_bot_messages[-2] == recent_bot_messages[-3]):
