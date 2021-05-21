@@ -14,9 +14,11 @@ with open(os.path.expanduser('~/open_ai.json')) as f:
 with open('prompt_qa.txt') as f:
   PROMPT_QA = f.read()
 
+DEFAULT_BOT_NAME = 'penguin'
+
 class g:
   recent_messages = []
-  bot_name = 'penguin#69420'
+  bot_name = f'{DEFAULT_BOT_NAME}#69420'
   chime_in_rate = 0.4
 
 PERSONALITY_TO_MESSAGE = {}
@@ -25,7 +27,7 @@ for path in glob.glob(os.path.join('personalities/*.txt')):
     personality_name = os.path.splitext(os.path.basename(path))[0]
     PERSONALITY_TO_MESSAGE[personality_name] = f.read()
 
-g.recent_messages.append(f'{g.bot_name}: {PERSONALITY_TO_MESSAGE[bot_name]}')
+g.recent_messages.append(f'{g.bot_name}: {PERSONALITY_TO_MESSAGE[DEFAULT_BOT_NAME]}')
 
 @client.event
 async def on_message(message):
