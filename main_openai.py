@@ -65,14 +65,12 @@ async def on_message(message):
     )
   elif message.content == ',clear messages':
     g.recent_messages = []
+    reset_personality(bot_name, recent_messages)
     await admin_message_(f'recent messages cleared')
   elif message.content.startswith(',set name'):
     bot_name = message.content.split()[-1]
     g.bot_name = f'{bot_name}#{int(random.random() * 1000)}'
-    is_found = False
-    if bot_name in PERSONALITY_TO_MESSAGE:
-      is_found = True
-      recent_messages.append(f'{g.bot_name}: {PERSONALITY_TO_MESSAGE[bot_name]}')
+    is_found = reset_personality(bot_name, recent_messages)
     await admin_message_(f'set bot name to {g.bot_name}; personality found: {is_found}')
   elif message.content.startswith(',set chime in rate'):
     try:
@@ -86,6 +84,13 @@ async def on_message(message):
     print('roll:', roll)
     if roll < g.chime_in_rate:
       await chime_in(message.channel, recent_messages, message)
+
+def reset_personality(bot_name, recent_messages):
+  is_found = False
+  if bot_name in PERSONALITY_TO_MESSAGE:
+    is_found = True
+    recent_messages.append(f'{g.bot_name}: {PERSONALITY_TO_MESSAGE[bot_name]}')
+  return is_found
 
 async def answer_question(message):
   prompt_str = f'{PROMPT_QA}\nQ: {message.content}\nA:'
