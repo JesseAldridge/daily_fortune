@@ -18,16 +18,16 @@ DEFAULT_BOT_NAME = 'penguin'
 
 class g:
   recent_messages = []
-  bot_name = f'{DEFAULT_BOT_NAME}#69420'
+  bot_name = DEFAULT_BOT_NAME
   chime_in_rate = 0.4
 
-PERSONALITY_TO_MESSAGE = {}
+PERSONALITY_TO_MESSAGES = {}
 for path in glob.glob(os.path.join('personalities', '*.txt')):
   with open(path) as f:
     personality_name = os.path.splitext(os.path.basename(path))[0]
-    PERSONALITY_TO_MESSAGE[personality_name] = f.read()
+    PERSONALITY_TO_MESSAGES[personality_name] = f.read().strip().splitlines()
 
-g.recent_messages.append(f'{g.bot_name}: {PERSONALITY_TO_MESSAGE[DEFAULT_BOT_NAME]}')
+reset_personality()
 
 @client.event
 async def on_ready(*a, **kw):
@@ -60,16 +60,18 @@ async def on_message(message):
   # if message.content.strip().endswith('?'):
   #   await answer_question(message)
   if message.content == ',help':
-    await admin_message_('```,clear messages\n,set name <name>\n,set chime in rate <rate>```')
-  elif message.content == ',clear messages':
+    await admin_message_('```,reset\n,set name <name>\n,set chime in rate <rate>```')
+  elif message.content == ',reset':
     g.recent_messages = []
-    reset_personality(bot_name, recent_messages)
-    await admin_message_(f'recent messages cleared')
+    reset_personality()
+    await admin_message_(f'bot reset')
   elif message.content.startswith(',set name'):
     bot_name = message.content.split()[-1]
-    g.bot_name = f'{bot_name}#{int(random.random() * 1000)}'
-    is_found = reset_personality(bot_name, recent_messages)
+    g.bot_name = bot_name
+    is_found = reset_personality()
     await admin_message_(f'set bot name to {g.bot_name}; personality found: {is_found}')
+    if not is_found:
+      g.bot_name += f'#{int(random.random() * 1000)}'
   elif message.content.startswith(',set chime in rate'):
     try:
       g.chime_in_rate = float(message.content.split()[-1])
@@ -83,12 +85,9 @@ async def on_message(message):
     if roll < g.chime_in_rate:
       await chime_in(message.channel, recent_messages, message)
 
-def reset_personality(bot_name, recent_messages):
-  is_found = False
-  if bot_name in PERSONALITY_TO_MESSAGE:
-    is_found = True
-    recent_messages.append(f'{g.bot_name}: {PERSONALITY_TO_MESSAGE[bot_name]}')
-  return is_found
+def reset_personality():
+  g.recent_messages += PERSONALITY_TO_MESSAGES[g.bot_name]
+  return g.bot_name in PERSONALITY_TO_MESSAGES
 
 async def answer_question(message):
   prompt_str = f'{PROMPT_QA}\nQ: {message.content}\nA:'
