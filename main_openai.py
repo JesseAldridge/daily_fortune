@@ -20,6 +20,9 @@ class g:
   recent_messages = []
   bot_name = DEFAULT_BOT_NAME
   chime_in_rate = 0.4
+  temperature=0.9
+  frequency_penalty=0.2
+  presence_penalty=0.6
 
 PERSONALITY_TO_MESSAGES = {}
 for path in glob.glob(os.path.join('personalities', '*.txt')):
@@ -74,13 +77,26 @@ async def on_message(message):
     await admin_message_(f'set bot name to {g.bot_name}; personality found: {is_found}')
     if not is_found:
       g.bot_name += f'#{int(random.random() * 1000)}'
-  elif message.content.startswith(',set chime in rate'):
+  elif message.content.startswith(',set '):
+    var, val_str = message.content.split(',set ', 1)[1].rsplit(' ', 1)
     try:
-      g.chime_in_rate = float(message.content.split()[-1])
+      val = float(val[-1])
     except ValueError:
       pass
     else:
-      await admin_message_(f'set chime in rate to {g.chime_in_rate}')
+      if var >= 0 and var <= 1:
+        await admin_message_(f'invalid value (should be between 0 and 1)')
+      else:
+        if var == 'chime in rate':
+          g.chime_in_rate = val
+        elif var == 'frequency penalty':
+          g.frequency_penalty = val
+        elif var == 'presence_penalty':
+          g.presence_penalty = val
+        elif var == 'temperature':
+          g.temperature = val
+        await admin_message_(f'set {var} to {val}')
+
   else:
     roll = random.random()
     print('roll:', roll)
@@ -102,11 +118,11 @@ async def chime_in(channel, recent_messages, message):
   response = openai.Completion.create(
     engine="davinci",
     prompt=prompt,
-    temperature=0.9,
+    temperature=g.temperature,
     max_tokens=200,
     top_p=1,
-    frequency_penalty=0.2,
-    presence_penalty=0.6,
+    frequency_penalty=g.frequency_penalty,
+    presence_penalty=g.presence_penalty,
     stop=["\n"]
   )
 
