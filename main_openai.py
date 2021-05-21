@@ -34,7 +34,7 @@ async def on_message(message):
 
   if message.content.strip().endswith('?'):
     await answer_question(message)
-  elif message.content = '_reboot':
+  elif message.content == '_reboot':
     g.recent_messages = []
   else:
     roll = random.random()
