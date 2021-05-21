@@ -16,13 +16,13 @@ with open('prompt_qa.txt') as f:
 
 class g:
   recent_messages = []
-  BOT_NAME = 'Jane#69420'
+  bot_name = 'Jane#69420'
 
 @client.event
 async def on_message(message):
   print('on message')
 
-  author = g.BOT_NAME if 'daily fortune#' in str(message.author) else message.author
+  author = g.bot_name if 'daily fortune#' in str(message.author) else message.author
 
   recent_messages = g.recent_messages
   recent_messages.append(f'{author}: {message.content}')
@@ -36,7 +36,7 @@ async def on_message(message):
   elif message.content == '_reboot':
     g.recent_messages = []
   elif message.content.startswith('_set_name'):
-    g.BOT_NAME = message.content.split()[-1]
+    g.bot_name = message.content.split()[-1]
   else:
     roll = random.random()
     print('roll:', roll)
@@ -61,13 +61,13 @@ async def answer_question(message):
 async def chime_in(recent_messages, message):
   recent_bot_messages = []
   for message_str in recent_messages:
-    if message_str.startswith(g.BOT_NAME):
+    if message_str.startswith(g.bot_name):
       recent_bot_messages.append(message_str)
 
   if(len(recent_bot_messages) >= 2 and recent_bot_messages[-1] == recent_bot_messages[-2]):
     recent_messages = [msg for msg in recent_messages if msg != recent_bot_messages[-1]]
 
-  prompt = '\n'.join(recent_messages) + f'\n{g.BOT_NAME}: '
+  prompt = '\n'.join(recent_messages) + f'\n{g.bot_name}: '
   print('prompt:', prompt)
 
   response = openai.Completion.create(
