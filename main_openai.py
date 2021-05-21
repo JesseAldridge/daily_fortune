@@ -27,6 +27,10 @@ for path in glob.glob(os.path.join('personalities', '*.txt')):
     personality_name = os.path.splitext(os.path.basename(path))[0]
     PERSONALITY_TO_MESSAGES[personality_name] = f.read().strip().splitlines()
 
+def reset_personality():
+  g.recent_messages += PERSONALITY_TO_MESSAGES[g.bot_name]
+  return g.bot_name in PERSONALITY_TO_MESSAGES
+
 reset_personality()
 
 @client.event
@@ -84,10 +88,6 @@ async def on_message(message):
     print('roll:', roll)
     if roll < g.chime_in_rate:
       await chime_in(message.channel, recent_messages, message)
-
-def reset_personality():
-  g.recent_messages += PERSONALITY_TO_MESSAGES[g.bot_name]
-  return g.bot_name in PERSONALITY_TO_MESSAGES
 
 async def answer_question(message):
   prompt_str = f'{PROMPT_QA}\nQ: {message.content}\nA:'
