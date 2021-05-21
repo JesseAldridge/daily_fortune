@@ -81,7 +81,7 @@ async def on_message(message):
     roll = random.random()
     print('roll:', roll)
     if roll < g.chime_in_rate:
-      await chime_in(recent_messages, message)
+      await chime_in(channel, recent_messages, message)
 
 async def answer_question(message):
   prompt_str = f'{PROMPT_QA}\nQ: {message.content}\nA:'
@@ -98,7 +98,7 @@ async def answer_question(message):
   )
   await admin_message(message, response.choices[0].text)
 
-async def chime_in(recent_messages, message):
+async def chime_in(channel, recent_messages, message):
   recent_bot_messages = []
   for message_str in recent_messages:
     if message_str.startswith(g.bot_name):
@@ -125,7 +125,7 @@ async def chime_in(recent_messages, message):
 
   response_text = response.choices[0].text
   if response_text:
-    await admin_message(response_text)
+    await admin_message(channel, response_text)
 
 async def admin_message(channel, msg):
   await channel.send(f'admin: *{msg}*')
