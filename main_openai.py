@@ -23,6 +23,7 @@ for path in glob.glob(os.path.join('personalities/*.txt')):
 class g:
   recent_messages = []
   bot_name = 'Jane#69420'
+  chime_in_rate = 0.4
 
 @client.event
 async def on_message(message):
@@ -41,15 +42,20 @@ async def on_message(message):
     await answer_question(message)
   elif message.content == ',reboot':
     g.recent_messages = []
-  elif message.content.startswith(',setname'):
+  elif message.content.startswith(',set name'):
     bot_name = message.content.split()[-1]
     g.bot_name = f'{bot_name}#{int(random.random() * 1000)}'
     if bot_name in PERSONALITY_TO_MESSAGE:
       g.recent_messages.append(f'{g.bot_name}: {PERSONALITY_TO_MESSAGE[bot_name]}')
+  elif message.content.startswith(',set chime in rate'):
+    try:
+      g.chime_in_rate = float(message.content.split()[-1])
+    except ValueError:
+      pass
   else:
     roll = random.random()
     print('roll:', roll)
-    if roll < .4:
+    if roll < g.chime_in_rate:
       await chime_in(recent_messages, message)
 
 async def answer_question(message):
