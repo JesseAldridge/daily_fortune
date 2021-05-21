@@ -21,12 +21,12 @@ class g:
 async def on_message(message):
   print('on message')
 
-  if message.author == client.user:
-    return
-
   recent_messages = g.recent_messages
   recent_messages.append(f'{message.author}: {message.content}')
-  recent_messages = recent_messages[-10:]
+  recent_messages = recent_messages[-20:]
+
+  if message.author == client.user:
+    return
 
   if message.content.strip().endswith('?'):
     await answer_question(message)
