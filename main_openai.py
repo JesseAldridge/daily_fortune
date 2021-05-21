@@ -34,9 +34,11 @@ async def on_ready(*a, **kw):
   print('on ready:', a, kw)
   for guild in client.guilds:
     print('guild:', guild)
-    for channel in guild.channels:
-      print('channel:', channel)
-      await channel.send("*bot rebooted*")
+    for category_channel in guild.channels:
+      print('category channel:', channel)
+      for channel in category_channel:
+        print('channel:', channel)
+        await channel.send("*bot rebooted*")
 
 @client.event
 async def on_message(message):
