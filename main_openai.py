@@ -22,7 +22,7 @@ class g:
   chime_in_rate = 0.4
 
 PERSONALITY_TO_MESSAGE = {}
-for path in glob.glob(os.path.join('personalities/*.txt')):
+for path in glob.glob(os.path.join('personalities', '*.txt')):
   with open(path) as f:
     personality_name = os.path.splitext(os.path.basename(path))[0]
     PERSONALITY_TO_MESSAGE[personality_name] = f.read()
@@ -38,11 +38,14 @@ async def on_ready(*a, **kw):
       print('category channel:', category_channel)
       for channel in category_channel:
         print('channel:', channel)
-        await channel.send("*bot rebooted*")
+        admin_message(channel, '*bot rebooted*')
 
 @client.event
 async def on_message(message):
   print('on message')
+
+  async def admin_message_(msg_str):
+    await admin_message(message.channel, msg_str)
 
   author = g.bot_name if 'daily fortune#' in str(message.author) else message.author
 
@@ -59,7 +62,7 @@ async def on_message(message):
   #   await answer_question(message)
   if message.content == ',clear messages':
     g.recent_messages = []
-    await message.channel.send(f'*recent messages cleared*')
+    await admin_message_(f'recent messages cleared')
   elif message.content.startswith(',set name'):
     bot_name = message.content.split()[-1]
     g.bot_name = f'{bot_name}#{int(random.random() * 1000)}'
@@ -67,14 +70,14 @@ async def on_message(message):
     if bot_name in PERSONALITY_TO_MESSAGE:
       is_found = True
       g.recent_messages.append(f'{g.bot_name}: {PERSONALITY_TO_MESSAGE[bot_name]}')
-    await message.channel.send(f'*set bot name to {g.bot_name}; personality found: {is_found}*')
+    await admin_message_(f'set bot name to {g.bot_name}; personality found: {is_found}')
   elif message.content.startswith(',set chime in rate'):
     try:
       g.chime_in_rate = float(message.content.split()[-1])
     except ValueError:
       pass
     else:
-      await message.channel.send(f'*set chime in rate to {g.chime_in_rate}*')
+      await admin_message_(message, f'set chime in rate to {g.chime_in_rate}')
   else:
     roll = random.random()
     print('roll:', roll)
@@ -94,7 +97,7 @@ async def answer_question(message):
     presence_penalty=0.0,
     stop=["\n"],
   )
-  await message.channel.send(response.choices[0].text)
+  await admin_message(message, response.choices[0].text)
 
 async def chime_in(recent_messages, message):
   recent_bot_messages = []
@@ -123,7 +126,9 @@ async def chime_in(recent_messages, message):
 
   response_text = response.choices[0].text
   if response_text:
-    await message.channel.send(response_text)
+    await admin_message(response_text)
 
+async def admin_message(channel, msg):
+  await channel.send(f'admin: *{msg}*')
 
 client.run(discord_config['bot_token'])
