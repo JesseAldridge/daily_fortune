@@ -17,7 +17,7 @@ with open('prompt_qa.txt') as f:
 class g:
   recent_messages = []
 
-BOT_NAME = 'Jane'
+BOT_NAME = 'Jane#69420'
 
 @client.event
 async def on_message(message):
