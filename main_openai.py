@@ -17,12 +17,16 @@ with open('prompt_qa.txt') as f:
 class g:
   recent_messages = []
 
+BOT_NAME = 'Jane'
+
 @client.event
 async def on_message(message):
   print('on message')
 
+  author = BOT_NAME if 'daily fortune#' in message.author else message.author
+
   recent_messages = g.recent_messages
-  recent_messages.append(f'{message.author}: {message.content}')
+  recent_messages.append(f'{author}: {message.content}')
   recent_messages = recent_messages[-20:]
 
   if message.author == client.user:
@@ -54,7 +58,7 @@ async def answer_question(message):
 async def chime_in(recent_messages, message):
   response = openai.Completion.create(
     engine="davinci",
-    prompt='\n'.join(recent_messages) + '\nJane: ',
+    prompt='\n'.join(recent_messages) + f'\n{BOT_NAME}: ',
     temperature=0.9,
     max_tokens=100,
     top_p=1,
