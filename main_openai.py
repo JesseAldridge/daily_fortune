@@ -63,10 +63,8 @@ async def chime_in(recent_messages, message):
     if message_str.startswith(BOT_NAME):
       recent_bot_messages.append(message_str)
 
-  if(len(recent_bot_messages) >= 3 and
-     recent_bot_messages[-1] == recent_bot_messages[-2] == recent_bot_messages[-3]):
-    sane_message = f"{BOT_NAME}: Good morning, I'm Jane."
-    recent_messages.insert(len(recent_messages) - 1, sane_message)
+  if(len(recent_bot_messages) >= 2 and recent_bot_messages[-1] == recent_bot_messages[-2]):
+    recent_messages = [msg for msg in recent_messages if msg != recent_bot_messages[-1]]
 
   prompt = '\n'.join(recent_messages) + f'\n{BOT_NAME}: '
   print('prompt:', prompt)
