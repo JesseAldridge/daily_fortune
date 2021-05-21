@@ -14,16 +14,18 @@ with open(os.path.expanduser('~/open_ai.json')) as f:
 with open('prompt_qa.txt') as f:
   PROMPT_QA = f.read()
 
+class g:
+  recent_messages = []
+  bot_name = 'penguin#69420'
+  chime_in_rate = 0.4
+
 PERSONALITY_TO_MESSAGE = {}
 for path in glob.glob(os.path.join('personalities/*.txt')):
   with open(path) as f:
     personality_name = os.path.splitext(os.path.basename(path))[0]
     PERSONALITY_TO_MESSAGE[personality_name] = f.read()
 
-class g:
-  recent_messages = []
-  bot_name = 'Jane#69420'
-  chime_in_rate = 0.4
+g.recent_messages.append(f'{g.bot_name}: {PERSONALITY_TO_MESSAGE[bot_name]}')
 
 @client.event
 async def on_message(message):
@@ -45,13 +47,18 @@ async def on_message(message):
   elif message.content.startswith(',set name'):
     bot_name = message.content.split()[-1]
     g.bot_name = f'{bot_name}#{int(random.random() * 1000)}'
+    is_found = False
     if bot_name in PERSONALITY_TO_MESSAGE:
+      is_found = True
       g.recent_messages.append(f'{g.bot_name}: {PERSONALITY_TO_MESSAGE[bot_name]}')
+    await message.channel.send(f'*set bot name to {g.bot_name}; personality found: {is_found}*')
   elif message.content.startswith(',set chime in rate'):
     try:
       g.chime_in_rate = float(message.content.split()[-1])
     except ValueError:
       pass
+    else:
+      await message.channel.send(f'*set chime in rate to {g.chime_in_rate}*')
   else:
     roll = random.random()
     print('roll:', roll)
