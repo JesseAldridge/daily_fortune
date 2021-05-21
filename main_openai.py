@@ -44,9 +44,9 @@ async def on_message(message):
   if message.author == client.user:
     return
 
-  if message.content.strip().endswith('?'):
-    await answer_question(message)
-  elif message.content == ',reboot':
+  # if message.content.strip().endswith('?'):
+  #   await answer_question(message)
+  if message.content == ',reboot':
     g.recent_messages = []
   elif message.content.startswith(',set name'):
     bot_name = message.content.split()[-1]
