@@ -28,7 +28,7 @@ for path in glob.glob(os.path.join('personalities', '*.txt')):
     PERSONALITY_TO_MESSAGES[personality_name] = f.read().strip().splitlines()
 
 def reset_personality():
-  g.recent_messages += PERSONALITY_TO_MESSAGES[g.bot_name]
+  g.recent_messages = PERSONALITY_TO_MESSAGES[g.bot_name]
   return g.bot_name in PERSONALITY_TO_MESSAGES
 
 reset_personality()
