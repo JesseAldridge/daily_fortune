@@ -54,7 +54,7 @@ async def answer_question(message):
 async def chime_in(recent_messages, message):
   response = openai.Completion.create(
     engine="davinci",
-    prompt='\n'.join(recent_messages) + '\nKevin: ',
+    prompt='\n'.join(recent_messages) + '\Jane: ',
     temperature=0.9,
     max_tokens=100,
     top_p=1,
