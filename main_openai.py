@@ -93,8 +93,8 @@ async def chime_in(channel, recent_messages, message):
     if message_str.startswith(g.bot_name):
       recent_bot_messages.append(message_str)
 
-  if(len(recent_bot_messages) >= 2 and recent_bot_messages[-1] == recent_bot_messages[-2]):
-    recent_messages = [msg for msg in recent_messages if msg != recent_bot_messages[-1]]
+  # if(len(recent_bot_messages) >= 2 and recent_bot_messages[-1] == recent_bot_messages[-2]):
+  #   recent_messages = [msg for msg in recent_messages if msg != recent_bot_messages[-1]]
 
   prompt = '\n'.join(recent_messages) + f'\n{g.bot_name}: '
   print('prompt:', prompt)
@@ -105,7 +105,7 @@ async def chime_in(channel, recent_messages, message):
     temperature=0.9,
     max_tokens=200,
     top_p=1,
-    frequency_penalty=0.0,
+    frequency_penalty=0.5,
     presence_penalty=0.6,
     stop=["\n"]
   )
