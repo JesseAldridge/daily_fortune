@@ -90,7 +90,7 @@ async def answer_question(message):
     engine="davinci",
     prompt=prompt_str,
     temperature=0,
-    max_tokens=100,
+    max_tokens=200,
     top_p=1,
     frequency_penalty=0.0,
     presence_penalty=0.0,
