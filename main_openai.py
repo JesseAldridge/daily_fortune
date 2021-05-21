@@ -30,6 +30,14 @@ for path in glob.glob(os.path.join('personalities/*.txt')):
 g.recent_messages.append(f'{g.bot_name}: {PERSONALITY_TO_MESSAGE[DEFAULT_BOT_NAME]}')
 
 @client.event
+async def on_ready():
+  for server in bot.servers:
+    for channel in server.channels:
+      if channel.permissions_for(server.me).send_messages:
+        await bot.send_message(channel, "*bot rebooted*")
+        break
+
+@client.event
 async def on_message(message):
   print('on message')
 
@@ -46,8 +54,9 @@ async def on_message(message):
 
   # if message.content.strip().endswith('?'):
   #   await answer_question(message)
-  if message.content == ',reboot':
+  if message.content == ',clear messages':
     g.recent_messages = []
+    await message.channel.send(f'*recent messages cleared*')
   elif message.content.startswith(',set name'):
     bot_name = message.content.split()[-1]
     g.bot_name = f'{bot_name}#{int(random.random() * 1000)}'
