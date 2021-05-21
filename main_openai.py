@@ -17,7 +17,7 @@ with open('prompt_qa.txt') as f:
 PERSONALITY_TO_MESSAGE = {}
 for path in glob.glob(os.path.join('personalities/*.txt')):
   with open(path) as f:
-    personality_name = os.splitext(os.path.basename(path))[0]
+    personality_name = os.path.splitext(os.path.basename(path))[0]
     PERSONALITY_TO_MESSAGE[personality_name] = f.read()
 
 class g:
