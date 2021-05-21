@@ -41,7 +41,7 @@ async def on_ready(*a, **kw):
 
 @client.event
 async def on_message(message):
-  print('on message:', message)
+  print('on message:', message.content)
 
   async def admin_message_(msg_str):
     await admin_message(message.channel, msg_str)
