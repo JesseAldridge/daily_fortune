@@ -60,7 +60,7 @@ async def answer_question(message):
 async def chime_in(recent_messages, message):
   if len(recent_messages) >= 2 and random.random() < .4:
     sane_message = f"{BOT_NAME}: Good morning, I'm Jane. How are you today?"
-    recent_messages.insert(len(recent_messages) - 2, sane_message)
+    recent_messages.append(sane_message)
 
   prompt = '\n'.join(recent_messages) + f'\n{BOT_NAME}: '
   print('prompt:', prompt)
