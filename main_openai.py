@@ -61,8 +61,6 @@ async def on_message(message):
   if message.author == client.user:
     return
 
-  # if message.content.strip().endswith('?'):
-  #   await answer_question(message)
   if message.content == ',help':
     await admin_message_('```,reset\n,set name <name>\n,set chime in rate <rate>```')
   elif message.content == ',reset':
@@ -88,21 +86,6 @@ async def on_message(message):
     print('roll:', roll)
     if roll < g.chime_in_rate:
       await chime_in(message.channel, recent_messages, message)
-
-async def answer_question(message):
-  prompt_str = f'{PROMPT_QA}\nQ: {message.content}\nA:'
-
-  response = openai.Completion.create(
-    engine="davinci",
-    prompt=prompt_str,
-    temperature=0,
-    max_tokens=100,
-    top_p=1,
-    frequency_penalty=0.0,
-    presence_penalty=0.0,
-    stop=["\n"],
-  )
-  await admin_message(message, response.choices[0].text)
 
 async def chime_in(channel, recent_messages, message):
   recent_bot_messages = []
