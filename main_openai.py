@@ -76,7 +76,7 @@ async def on_message(message):
     except ValueError:
       pass
     else:
-      await admin_message_(message, f'set chime in rate to {g.chime_in_rate}')
+      await admin_message_(f'set chime in rate to {g.chime_in_rate}')
   else:
     roll = random.random()
     print('roll:', roll)
