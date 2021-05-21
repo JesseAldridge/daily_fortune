@@ -58,7 +58,7 @@ async def answer_question(message):
   await message.channel.send(response.choices[0].text)
 
 async def chime_in(recent_messages, message):
-  if len(recent_messages) >= 2 and random.random() < .1:
+  if len(recent_messages) >= 2 and random.random() < .4:
     sane_message = f"{BOT_NAME}: Good morning, I'm Jane. How are you today?"
     recent_messages.insert(len(recent_messages) - 2, sane_message)
 
