@@ -30,13 +30,11 @@ for path in glob.glob(os.path.join('personalities/*.txt')):
 g.recent_messages.append(f'{g.bot_name}: {PERSONALITY_TO_MESSAGE[DEFAULT_BOT_NAME]}')
 
 @client.event
-async def on_ready():
-  print('on ready')
-  for server in client.servers:
-    print('server:', server)
-    for channel in server.channels:
-      print('channel:', channel)
-      await client.send_message(channel, "*bot rebooted*")
+async def on_ready(*a, **kw):
+  print('on ready:', a, kw)
+  for channel in client.channels:
+    print('channel:', channel)
+    await client.send_message(channel, "*bot rebooted*")
 
 @client.event
 async def on_message(message):
