@@ -37,7 +37,7 @@ async def on_ready(*a, **kw):
     for channel in guild.channels:
       print('channel:', channel)
       if hasattr(channel, 'send'):
-        await admin_message(channel, '*bot rebooted*')
+        await admin_message(channel, 'bot rebooted')
 
 @client.event
 async def on_message(message):
