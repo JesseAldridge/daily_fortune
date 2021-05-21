@@ -34,10 +34,9 @@ async def on_ready(*a, **kw):
   print('on ready:', a, kw)
   for guild in client.guilds:
     print('guild:', guild)
-    for category_channel in guild.channels:
-      print('category channel:', category_channel)
-      for channel in category_channel.channels:
-        print('channel:', channel)
+    for channel in guild.channels:
+      print('channel:', channel)
+      if hasattr(channel, 'send'):
         admin_message(channel, '*bot rebooted*')
 
 @client.event
