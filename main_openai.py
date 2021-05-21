@@ -36,8 +36,10 @@ async def on_message(message):
   author = g.bot_name if 'daily fortune#' in str(message.author) else message.author
 
   recent_messages = g.recent_messages
-  recent_messages.append(f'{author}: {message.content}')
-  recent_messages = recent_messages[-20:]
+
+  if not message.startswith(','):
+    recent_messages.append(f'{author}: {message.content}')
+    recent_messages = recent_messages[-20:]
 
   if message.author == client.user:
     return
