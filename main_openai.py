@@ -62,9 +62,11 @@ async def chime_in(recent_messages, message):
     sane_message = f"{BOT_NAME}: Good morning, I'm Jane. How are you today?"
     recent_messages.insert(len(recent_messages) - 2, sane_message)
 
+  print('prompt:', prompt)
+
   response = openai.Completion.create(
     engine="davinci",
-    prompt='\n'.join(recent_messages) + f'\n{BOT_NAME}: ',
+    prompt=prompt,
     temperature=0.9,
     max_tokens=100,
     top_p=1,
