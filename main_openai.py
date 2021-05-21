@@ -23,7 +23,7 @@ BOT_NAME = 'Jane'
 async def on_message(message):
   print('on message')
 
-  author = BOT_NAME if 'daily fortune#' in message.author else message.author
+  author = BOT_NAME if 'daily fortune#' in str(message.author) else message.author
 
   recent_messages = g.recent_messages
   recent_messages.append(f'{author}: {message.content}')
