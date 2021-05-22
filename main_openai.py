@@ -91,7 +91,7 @@ async def on_message(message):
     set_personality(g.bot_name)
     await admin_message_(f'bot reset')
   elif message.content == ',debug':
-    await debug_dump()
+    await debug_dump(message.channel)
   elif message.content == ',randomize':
     await randomize(message.channel)
   elif message.content.startswith(',set name'):
