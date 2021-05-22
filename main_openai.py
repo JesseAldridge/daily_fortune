@@ -68,8 +68,8 @@ async def on_message(message):
     await admin_message_(textwrap.dedent('''
       ```
       ,reset
-      set name <name>
-      set <variable> <value>
+      ,set name <name>
+      ,set <variable> <value>
       variables: chime in rate, temperature, frequency penalty, presence penalty
       ```
     '''))
