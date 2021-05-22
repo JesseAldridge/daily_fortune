@@ -100,7 +100,7 @@ class ChatBot:
         self.set_random_personality()
 
   def should_chime_in(self, msg_str):
-    if self.personality.name == 'answer' and msg_str.strip().endswith('?'):
+    if msg_str.strip().endswith('?'):
       return True
     return random.random() < self.params['chime_in_rate']
 
