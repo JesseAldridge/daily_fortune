@@ -28,7 +28,8 @@ vars = {
 
 async def randomize(channel):
   for key in vars.keys():
-    vars[key] = random.random()
+    if key != 'randomize_rate':
+      vars[key] = random.random()
   set_random_personality()
 
 PERSONALITY_TO_MESSAGES = {}
