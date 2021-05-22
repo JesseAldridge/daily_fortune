@@ -30,7 +30,6 @@ async def randomize(channel):
   for key in vars.keys():
     vars[key] = random.random()
   set_random_personality()
-  await debug_dump(channel)
 
 PERSONALITY_TO_MESSAGES = {}
 for path in glob.glob(os.path.join('personalities', '*.txt')):
@@ -55,8 +54,9 @@ async def on_ready(*a, **kw):
     for channel in guild.channels:
       print('channel:', channel)
       if hasattr(channel, 'send'):
-        await admin_message(channel, 'bot launched')
         await randomize(channel)
+        await admin_message(channel, 'bot launched')
+        await debug_dump(channel)
 
 async def debug_dump(channel):
   await admin_message(channel, f'```bot_name: {g.bot_name}\n{json.dumps(vars, indent=2)}```')
