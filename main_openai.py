@@ -65,7 +65,15 @@ async def on_message(message):
     return
 
   if message.content == ',help':
-    await admin_message_('```,reset\n,set name <name>\n,set chime in rate <rate>```')
+    await admin_message_(textwrap.dedent('''
+      ```
+      ,reset
+      set name <name>
+      set <variable> <value>
+      variables: chime in rate, temperature, frequency penalty, presence penalty
+      ```
+    '''))
+
   elif message.content == ',reset':
     g.recent_messages = []
     reset_personality()
@@ -91,7 +99,7 @@ async def on_message(message):
           g.chime_in_rate = val
         elif var == 'frequency penalty':
           g.frequency_penalty = val
-        elif var == 'presence_penalty':
+        elif var == 'presence penalty':
           g.presence_penalty = val
         elif var == 'temperature':
           g.temperature = val
