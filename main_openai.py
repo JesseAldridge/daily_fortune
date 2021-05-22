@@ -64,7 +64,7 @@ async def on_message(message):
 
   recent_messages = g.recent_messages
 
-  if not message.content.startswith(',') and not message.content.startswith('admin:'):
+  if not message.content.startswith(',') and not message.content.startswith('*admin*:'):
     recent_messages.append(f'{author}: {message.content}')
     recent_messages = recent_messages[-20:]
 
