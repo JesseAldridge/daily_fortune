@@ -74,6 +74,15 @@ class ChatBot:
 
     if message.content == ',debug':
       await self.debug_dump(message.channel)
+    elif message.content == ',help':
+      await admin_message_(textwrap.dedent(f'''
+        ```
+        ,debug
+        ,set name <name>
+        ,set <variable> <value>
+        variables: {list(params.keys())}
+        ```
+      '''))
     elif message.content.startswith(',set name'):
       bot_name = message.content.split()[-1]
       is_found = self.set_personality(bot_name) is not None
