@@ -37,6 +37,9 @@ class ChatBot:
       'stop': ["\n"],
     }
 
+    unmodifiable_params = ('max_tokens', 'stop')
+    self.modifiable_params = [k for k in self.params.keys() if k not in unmodifiable_params]
+
     self.name_to_personality = {}
     for path in glob.glob(os.path.join('personalities', '*.txt')):
       with open(path) as f:
@@ -73,14 +76,14 @@ class ChatBot:
       return
 
     if message.content == ',debug':
-      await self.debug_dump(message.channel)
+      await self.debug_dump()
     elif message.content == ',help':
       await self.admin_message(textwrap.dedent(f'''
         ```
         ,debug
         ,set name <name>
         ,set <variable> <value>
-        variables: {list(self.params.keys())}
+        variables: {list(self.modifiable_params)}
         ```
       '''))
     elif message.content.startswith(',set name'):
@@ -104,6 +107,11 @@ class ChatBot:
   async def set_variable(self, msg_str):
     var, val_str = msg_str.split(',set ', 1)[1].rsplit(' ', 1)
     var = '_'.join(var.split())
+
+    if var not in self.modifiable_params:
+      await self.admin_message(f'invalid variable: {var}')
+      return
+
     try:
       val = float(val_str)
     except ValueError:
