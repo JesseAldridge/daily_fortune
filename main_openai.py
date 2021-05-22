@@ -96,7 +96,7 @@ async def on_message(message):
     if random.random() < vars.get('chime_in_rate'):
       if random.random() < vars.get('change_personality_rate'):
         set_random_personality()
-      await chime_in(message.channel, recent_messages, message)
+      await chime_in(message.channel, message)
 
 async def set_variable(message):
   async def admin_message_(msg_str):
@@ -117,16 +117,8 @@ async def set_variable(message):
   vars[var] = val
   await admin_message_(f'set {var} to {val}')
 
-async def chime_in(channel, recent_messages, message):
-  recent_bot_messages = []
-  for message_str in recent_messages:
-    if message_str.startswith(g.bot_name):
-      recent_bot_messages.append(message_str)
-
-  # if(len(recent_bot_messages) >= 2 and recent_bot_messages[-1] == recent_bot_messages[-2]):
-  #   recent_messages = [msg for msg in recent_messages if msg != recent_bot_messages[-1]]
-
-  prompt = '\n'.join(recent_messages) + f'\n{g.bot_name}: '
+async def chime_in(channel, message):
+  prompt = '\n'.join(g.recent_messages) + f'\n{g.bot_name}: '
   print('prompt:', prompt)
 
   response = openai.Completion.create(
