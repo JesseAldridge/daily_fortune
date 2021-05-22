@@ -75,7 +75,7 @@ class ChatBot:
     if message.content == ',debug':
       await self.debug_dump(message.channel)
     elif message.content == ',help':
-      await admin_message_(textwrap.dedent(f'''
+      await self.admin_message(textwrap.dedent(f'''
         ```
         ,debug
         ,set name <name>
