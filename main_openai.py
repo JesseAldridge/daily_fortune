@@ -23,7 +23,7 @@ vars = {
   'temperature': 0.9,
   'frequency_penalty': 0.2,
   'presence_penalty': 0.6,
-  'change_personality_rate': 0.1,
+  'randomize_rate': 0.1,
 }
 
 async def randomize(channel):
@@ -104,8 +104,8 @@ async def on_message(message):
     await set_variable(message)
   else:
     if random.random() < vars.get('chime_in_rate'):
-      if random.random() < vars.get('change_personality_rate'):
-        set_random_personality()
+      if random.random() < vars.get('randomize_rate'):
+        randomize()
       await chime_in(message.channel, message)
 
 async def set_variable(message):
