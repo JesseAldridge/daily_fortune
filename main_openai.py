@@ -82,6 +82,8 @@ async def on_message(message):
   elif message.content == ',reset':
     set_personality(g.bot_name)
     await admin_message_(f'bot reset')
+  elif message.content == ',debug':
+    await admin_message_(json.dumps(vars, indent=2))
   elif message.content.startswith(',set name'):
     bot_name = message.content.split()[-1]
     is_found = set_personality(bot_name)
