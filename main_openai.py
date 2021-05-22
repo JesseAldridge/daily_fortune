@@ -19,17 +19,17 @@ class g:
   recent_messages = []
 
 vars = {
-  # 'chime_in_rate': 0.4,
-  # 'temperature': 0.9,
-  # 'frequency_penalty': 0.2,
-  # 'presence_penalty': 0.6,
-  # 'change_personality_rate': 0.1,
-  'chime_in_rate': random.random(),
-  'temperature': random.random(),
-  'frequency_penalty': random.random(),
-  'presence_penalty': random.random(),
-  'change_personality_rate': random.random(),
+  'chime_in_rate': 0.4,
+  'temperature': 0.9,
+  'frequency_penalty': 0.2,
+  'presence_penalty': 0.6,
+  'change_personality_rate': 0.1,
 }
+
+def randomize():
+  for key in vars.keys():
+    vars[key] = randomize.random()
+  set_random_personality()
 
 PERSONALITY_TO_MESSAGES = {}
 for path in glob.glob(os.path.join('personalities', '*.txt')):
@@ -46,7 +46,7 @@ def set_personality(bot_name):
 def set_random_personality():
   set_personality(random.choice(list(PERSONALITY_TO_MESSAGES.keys())))
 
-set_random_personality()
+randomize()
 
 @client.event
 async def on_ready(*a, **kw):
@@ -80,6 +80,7 @@ async def on_message(message):
       ```
       ,reset
       ,debug
+      ,randomize
       ,set name <name>
       ,set <variable> <value>
       variables: {list(vars.keys())}
@@ -90,6 +91,8 @@ async def on_message(message):
     await admin_message_(f'bot reset')
   elif message.content == ',debug':
     await admin_message_(f'```bot_name: {g.bot_name}\n{json.dumps(vars, indent=2)}```')
+  elif message.content == ',randomize':
+    randomize()
   elif message.content.startswith(',set name'):
     bot_name = message.content.split()[-1]
     is_found = set_personality(bot_name)
