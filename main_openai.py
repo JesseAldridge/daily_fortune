@@ -26,11 +26,11 @@ vars = {
   'change_personality_rate': 0.1,
 }
 
-async def randomize(debug_dump):
+async def randomize(channel):
   for key in vars.keys():
     vars[key] = random.random()
   set_random_personality()
-  await debug_dump()
+  await debug_dump(channel)
 
 PERSONALITY_TO_MESSAGES = {}
 for path in glob.glob(os.path.join('personalities', '*.txt')):
