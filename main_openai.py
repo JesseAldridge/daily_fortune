@@ -141,6 +141,6 @@ async def chime_in(channel, recent_messages, message):
     await channel.send(response_text)
 
 async def admin_message(channel, msg):
-  await channel.send(f'admin: *{msg}*')
+  await channel.send(f'*admin*: {msg}')
 
 client.run(discord_config['bot_token'])
