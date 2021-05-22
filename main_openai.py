@@ -28,7 +28,7 @@ vars = {
 
 def randomize():
   for key in vars.keys():
-    vars[key] = randomize.random()
+    vars[key] = random.random()
   set_random_personality()
 
 PERSONALITY_TO_MESSAGES = {}
