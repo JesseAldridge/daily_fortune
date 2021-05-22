@@ -52,7 +52,7 @@ async def on_ready(*a, **kw):
   print('on ready:', a, kw)
   await randomize()
 
-def debug_dump():
+async def debug_dump():
   await admin_message(channel, f'```bot_name: {g.bot_name}\n{json.dumps(vars, indent=2)}```')
 
 @client.event
