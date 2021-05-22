@@ -93,7 +93,7 @@ async def on_message(message):
   elif message.content == ',debug':
     await debug_dump()
   elif message.content == ',randomize':
-    randomize()
+    randomize(message.channel)
   elif message.content.startswith(',set name'):
     bot_name = message.content.split()[-1]
     is_found = set_personality(bot_name)
