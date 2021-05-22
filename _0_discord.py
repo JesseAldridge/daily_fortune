@@ -14,7 +14,7 @@ class MyClient(discord.Client):
         print('channel:', channel)
         if hasattr(channel, 'send'):
           self.chat_bot = self.ChatBotClass(channel, self)
-          await channel.send(f'**bot launched**')
+          await self.chat_bot.admin_message('bot launched')
           return
 
   async def on_message(self, message):

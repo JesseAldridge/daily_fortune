@@ -55,7 +55,9 @@ class ChatBot:
     return personality
 
   def set_random_personality(self):
-    new_name = random.choice(list(self.name_to_personality.keys()))
+    personality_names = list(self.name_to_personality.keys())
+    print('personality_names:', personality_names)
+    new_name = random.choice(personality_names)
     self.set_personality(new_name)
 
   async def on_message(self, message):
@@ -63,27 +65,35 @@ class ChatBot:
 
     author = self.personality.name if 'daily fortune#' in str(message.author) else message.author
 
-    if message.content != '**bot launched**':
+    if not message.content.startswith(',') and not message.content.startswith('*admin*:'):
       self.recent_messages.append(f'{author}: {message.content}')
       self.recent_messages = self.recent_messages[-20:]
 
     if message.author == self.client.user:
       return
 
-    if message.content.startswith(',set '):
-      await self.set_variable(message)
-    elif self.should_chime_in(self):
+    if message.content == ',debug':
+      await debug_dump(message.channel)
+    elif message.content.startswith(',set name'):
+      bot_name = message.content.split()[-1]
+      is_found = self.set_personality(bot_name) is not None
+      await self.admin_message(f'set bot name to {bot_name}; personality found: {is_found}')
+      if not is_found:
+        self.bot_name += f'#{int(random.random() * 1000)}'
+    elif message.content.startswith(',set '):
+      await self.set_variable(message.content)
+    elif self.should_chime_in(message.content):
       await self.chime_in(message)
       if random.random() < self.params['change_personality_rate']:
-        await self.set_random_personality()
+        self.set_random_personality()
 
   def should_chime_in(self, msg_str):
-    if self.name == 'answer' and msg_str.strip().endswith('?'):
+    if self.personality.name == 'answer' and msg_str.strip().endswith('?'):
       return True
     return random.random() < self.params['chime_in_rate']
 
-  async def set_variable(self, message):
-    var, val_str = message.content.split(',set ', 1)[1].rsplit(' ', 1)
+  async def set_variable(self, msg_str):
+    var, val_str = msg_str.split(',set ', 1)[1].rsplit(' ', 1)
     var = '_'.join(var.split())
     try:
       val = float(val_str)
@@ -119,6 +129,14 @@ class ChatBot:
     response_text = response.choices[0].text
     if response_text:
       await self.channel.send(response_text)
+
+  async def debug_dump(self):
+    name = self.personality.name
+    params_str = json.dumps(self.params, indent=2)
+    await self.admin_message(f'```bot_name: {name}\n{params_str}```')
+
+  async def admin_message(self, msg):
+    await self.channel.send(f'*admin*: {msg}')
 
 def main():
   _0_discord.main(ChatBot)
