@@ -26,7 +26,7 @@ vars = {
   'change_personality_rate': 0.1,
 }
 
-async def randomize():
+async def randomize(debug_dump):
   for key in vars.keys():
     vars[key] = random.random()
   set_random_personality()
@@ -50,9 +50,14 @@ def set_random_personality():
 @client.event
 async def on_ready(*a, **kw):
   print('on ready:', a, kw)
-  await randomize()
+  for guild in client.guilds:
+    print('guild:', guild)
+    for channel in guild.channels:
+      print('channel:', channel)
+      if hasattr(channel, 'send'):
+        await randomize(channel)
 
-async def debug_dump():
+async def debug_dump(chanel):
   await admin_message(channel, f'```bot_name: {g.bot_name}\n{json.dumps(vars, indent=2)}```')
 
 @client.event
