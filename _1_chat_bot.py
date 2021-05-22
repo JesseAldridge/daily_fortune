@@ -73,7 +73,7 @@ class ChatBot:
       return
 
     if message.content == ',debug':
-      await debug_dump(message.channel)
+      await self.debug_dump(message.channel)
     elif message.content.startswith(',set name'):
       bot_name = message.content.split()[-1]
       is_found = self.set_personality(bot_name) is not None
@@ -102,7 +102,7 @@ class ChatBot:
     if not(val >= 0 and val <= 1):
       await self.admin_message(f'invalid value (should be a number between 0 and 1)')
       return
-    if var not in vars:
+    if var not in self.params:
       await self.admin_message(f'unrecognized variable name')
       return
 
