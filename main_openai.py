@@ -62,11 +62,9 @@ async def on_message(message):
 
   author = g.bot_name if 'daily fortune#' in str(message.author) else message.author
 
-  recent_messages = g.recent_messages
-
   if not message.content.startswith(',') and not message.content.startswith('*admin*:'):
-    recent_messages.append(f'{author}: {message.content}')
-    recent_messages = recent_messages[-20:]
+    g.recent_messages.append(f'{author}: {message.content}')
+    g.recent_messages = g.recent_messages[-20:]
 
   if message.author == client.user:
     return
@@ -75,12 +73,12 @@ async def on_message(message):
     await admin_message_(textwrap.dedent(f'''
       ```
       ,reset
+      ,debug
       ,set name <name>
       ,set <variable> <value>
       variables: {list(vars.keys())}
       ```
     '''))
-
   elif message.content == ',reset':
     set_personality(g.bot_name)
     await admin_message_(f'bot reset')
