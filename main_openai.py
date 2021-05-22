@@ -48,7 +48,7 @@ def set_random_personality():
   set_personality(random.choice(list(PERSONALITY_TO_MESSAGES.keys())))
 
   if g.bot_name == 'answer':
-    vars.presence_penalty = 0.9
+    vars['presence_penalty'] = 0.9
 
 @client.event
 async def on_ready(*a, **kw):
