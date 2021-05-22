@@ -114,6 +114,7 @@ async def set_variable(message):
     await admin_message(message.channel, msg_str)
 
   var, val_str = message.content.split(',set ', 1)[1].rsplit(' ', 1)
+  var = '_'.join(var.split())
   try:
     val = float(val_str)
   except ValueError:
