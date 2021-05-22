@@ -18,12 +18,13 @@ class g:
   bot_name = None
   recent_messages = []
 
-class Vars:
-  chime_in_rate = 0.4
-  temperature = 0.9
-  frequency_penalty = 0.2
-  presence_penalty = 0.6
-  change_personality_rate = 0.1
+vars = {
+  'chime_in_rate': 0.4,
+  'temperature': 0.9,
+  'frequency_penalty': 0.2,
+  'presence_penalty': 0.6,
+  'change_personality_rate': 0.1,
+}
 
 PERSONALITY_TO_MESSAGES = {}
 for path in glob.glob(os.path.join('personalities', '*.txt')):
@@ -75,7 +76,7 @@ async def on_message(message):
       ,reset
       ,set name <name>
       ,set <variable> <value>
-      variables: {list(Vars.keys())}
+      variables: {list(vars.keys())}
       ```
     '''))
 
@@ -91,8 +92,8 @@ async def on_message(message):
   elif message.content.startswith(',set '):
     await set_variable(message)
   else:
-    if random.random() < Vars.chime_in_rate:
-      if random.random() < Vars.change_personality_rate:
+    if random.random() < vars.get('chime_in_rate'):
+      if random.random() < vars.get('change_personality_rate'):
         set_random_personality()
       await chime_in(message.channel, recent_messages, message)
 
@@ -108,11 +109,11 @@ async def set_variable(message):
   if not(val >= 0 and val <= 1):
     await admin_message_(f'invalid value (should be a number between 0 and 1)')
     return
-  if not hasattr(Vars, var):
+  if var not in vars:
     await admin_message_(f'unrecognized variable name')
     return
 
-  setattr(Vars, var, val)
+  vars[var] = val
   await admin_message_(f'set {var} to {val}')
 
 async def chime_in(channel, recent_messages, message):
@@ -130,11 +131,11 @@ async def chime_in(channel, recent_messages, message):
   response = openai.Completion.create(
     engine="davinci",
     prompt=prompt,
-    temperature=Vars.temperature,
+    temperature=vars.get('temperature'),
     max_tokens=200,
     top_p=1,
-    frequency_penalty=Vars.frequency_penalty,
-    presence_penalty=Vars.presence_penalty,
+    frequency_penalty=vars.get('frequency_penalty'),
+    presence_penalty=vars.get('presence_penalty'),
     stop=["\n"]
   )
 
