@@ -26,10 +26,11 @@ vars = {
   'change_personality_rate': 0.1,
 }
 
-def randomize():
+async def randomize():
   for key in vars.keys():
     vars[key] = random.random()
   set_random_personality()
+  await debug_dump()
 
 PERSONALITY_TO_MESSAGES = {}
 for path in glob.glob(os.path.join('personalities', '*.txt')):
@@ -46,18 +47,13 @@ def set_personality(bot_name):
 def set_random_personality():
   set_personality(random.choice(list(PERSONALITY_TO_MESSAGES.keys())))
 
-randomize()
-
 @client.event
 async def on_ready(*a, **kw):
   print('on ready:', a, kw)
-  for guild in client.guilds:
-    print('guild:', guild)
-    for channel in guild.channels:
-      print('channel:', channel)
-      if hasattr(channel, 'send'):
-        await admin_message(channel, 'bot rebooted')
-        await admin_message(channel, f'```bot_name: {g.bot_name}\n{json.dumps(vars, indent=2)}```')
+  await randomize()
+
+def debug_dump():
+  await admin_message(channel, f'```bot_name: {g.bot_name}\n{json.dumps(vars, indent=2)}```')
 
 @client.event
 async def on_message(message):
@@ -90,7 +86,7 @@ async def on_message(message):
     set_personality(g.bot_name)
     await admin_message_(f'bot reset')
   elif message.content == ',debug':
-    await admin_message_(f'```bot_name: {g.bot_name}\n{json.dumps(vars, indent=2)}```')
+    await debug_dump()
   elif message.content == ',randomize':
     randomize()
   elif message.content.startswith(',set name'):
