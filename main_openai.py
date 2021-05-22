@@ -57,7 +57,7 @@ async def on_ready(*a, **kw):
       if hasattr(channel, 'send'):
         await randomize(channel)
 
-async def debug_dump(chanel):
+async def debug_dump(channel):
   await admin_message(channel, f'```bot_name: {g.bot_name}\n{json.dumps(vars, indent=2)}```')
 
 @client.event
