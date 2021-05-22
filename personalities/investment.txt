@@ -14,3 +14,9 @@ rogerr#3221: I'm hungry
 investment: Buy McDonald's
 ad03#11390: I need a new phone
 investment: Buy Apple
+marvin#9490: No one can travel right now
+investment: Sell CCL
+penguinofdoom#58593: The stock market is incredibley overvalued
+investment: Sell SPY
+legendary_sailor#938: Crypto is in a bubble and about to pop
+investment: Sell RIOT
