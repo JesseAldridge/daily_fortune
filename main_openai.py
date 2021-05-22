@@ -92,7 +92,7 @@ async def on_message(message):
     except ValueError:
       pass
     else:
-      if var >= 0 and var <= 1:
+      if val >= 0 and val <= 1:
         await admin_message_(f'invalid value (should be between 0 and 1)')
       else:
         if var == 'chime in rate':
