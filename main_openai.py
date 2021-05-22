@@ -14,15 +14,16 @@ with open(os.path.expanduser('~/open_ai.json')) as f:
 with open('prompt_qa.txt') as f:
   PROMPT_QA = f.read()
 
-DEFAULT_BOT_NAME = 'penguin'
-
 class g:
+  bot_name = None
   recent_messages = []
-  bot_name = DEFAULT_BOT_NAME
+
+class Vars:
   chime_in_rate = 0.4
-  temperature=0.9
-  frequency_penalty=0.2
-  presence_penalty=0.6
+  temperature = 0.9
+  frequency_penalty = 0.2
+  presence_penalty = 0.6
+  change_personality_rate = 0.1
 
 PERSONALITY_TO_MESSAGES = {}
 for path in glob.glob(os.path.join('personalities', '*.txt')):
@@ -30,11 +31,15 @@ for path in glob.glob(os.path.join('personalities', '*.txt')):
     personality_name = os.path.splitext(os.path.basename(path))[0]
     PERSONALITY_TO_MESSAGES[personality_name] = f.read().strip().splitlines()
 
-def reset_personality():
-  g.recent_messages = PERSONALITY_TO_MESSAGES[g.bot_name]
-  return g.bot_name in PERSONALITY_TO_MESSAGES
+def set_personality(bot_name):
+  g.bot_name = bot_name
+  g.recent_messages = PERSONALITY_TO_MESSAGES.get(bot_name) or g.recent_messages
+  return bot_name in PERSONALITY_TO_MESSAGES
 
-reset_personality()
+def set_random_personality():
+  set_personality(random.choice(list(PERSONALITY_TO_MESSAGES.keys())))
+
+set_random_personality()
 
 @client.event
 async def on_ready(*a, **kw):
@@ -65,51 +70,50 @@ async def on_message(message):
     return
 
   if message.content == ',help':
-    await admin_message_(textwrap.dedent('''
+    await admin_message_(textwrap.dedent(f'''
       ```
       ,reset
       ,set name <name>
       ,set <variable> <value>
-      variables: chime in rate, temperature, frequency penalty, presence penalty
+      variables: {list(Vars.keys())}
       ```
     '''))
 
   elif message.content == ',reset':
-    g.recent_messages = []
-    reset_personality()
+    set_personality(g.bot_name)
     await admin_message_(f'bot reset')
   elif message.content.startswith(',set name'):
     bot_name = message.content.split()[-1]
-    g.bot_name = bot_name
-    is_found = reset_personality()
+    is_found = set_personality(bot_name)
     await admin_message_(f'set bot name to {g.bot_name}; personality found: {is_found}')
     if not is_found:
       g.bot_name += f'#{int(random.random() * 1000)}'
   elif message.content.startswith(',set '):
-    var, val_str = message.content.split(',set ', 1)[1].rsplit(' ', 1)
-    try:
-      val = float(val_str)
-    except ValueError:
-      pass
-    else:
-      if not(val >= 0 and val <= 1):
-        await admin_message_(f'invalid value (should be between 0 and 1)')
-      else:
-        if var == 'chime in rate':
-          g.chime_in_rate = val
-        elif var == 'frequency penalty':
-          g.frequency_penalty = val
-        elif var == 'presence penalty':
-          g.presence_penalty = val
-        elif var == 'temperature':
-          g.temperature = val
-        await admin_message_(f'set {var} to {val}')
-
+    await set_variable(message)
   else:
-    roll = random.random()
-    print('roll:', roll)
-    if roll < g.chime_in_rate:
+    if random.random() < Vars.chime_in_rate:
+      if random.random() < Vars.change_personality_rate:
+        set_random_personality()
       await chime_in(message.channel, recent_messages, message)
+
+async def set_variable(message):
+  async def admin_message_(msg_str):
+    await admin_message(message.channel, msg_str)
+
+  var, val_str = message.content.split(',set ', 1)[1].rsplit(' ', 1)
+  try:
+    val = float(val_str)
+  except ValueError:
+    await admin_message_(f'invalid value (should be a number between 0 and 1)')
+  if not(val >= 0 and val <= 1):
+    await admin_message_(f'invalid value (should be a number between 0 and 1)')
+    return
+  if not hasattr(Vars, var):
+    await admin_message_(f'unrecognized variable name')
+    return
+
+  setattr(Vars, var, val)
+  await admin_message_(f'set {var} to {val}')
 
 async def chime_in(channel, recent_messages, message):
   recent_bot_messages = []
@@ -126,11 +130,11 @@ async def chime_in(channel, recent_messages, message):
   response = openai.Completion.create(
     engine="davinci",
     prompt=prompt,
-    temperature=g.temperature,
+    temperature=Vars.temperature,
     max_tokens=200,
     top_p=1,
-    frequency_penalty=g.frequency_penalty,
-    presence_penalty=g.presence_penalty,
+    frequency_penalty=Vars.frequency_penalty,
+    presence_penalty=Vars.presence_penalty,
     stop=["\n"]
   )
 
