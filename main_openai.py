@@ -35,6 +35,7 @@ for path in glob.glob(os.path.join('personalities', '*.txt')):
 def set_personality(bot_name):
   g.bot_name = bot_name
   g.recent_messages = PERSONALITY_TO_MESSAGES.get(bot_name) or g.recent_messages
+  print('set personality to:', g.bot_name)
   return bot_name in PERSONALITY_TO_MESSAGES
 
 def set_random_personality():
