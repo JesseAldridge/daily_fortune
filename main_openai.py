@@ -105,7 +105,7 @@ async def on_message(message):
   else:
     if random.random() < vars.get('chime_in_rate'):
       if random.random() < vars.get('randomize_rate'):
-        randomize(message.channel)
+        await randomize(message.channel)
       await chime_in(message.channel, message)
 
 async def set_variable(message):
