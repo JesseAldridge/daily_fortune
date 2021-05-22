@@ -19,11 +19,16 @@ class g:
   recent_messages = []
 
 vars = {
-  'chime_in_rate': 0.4,
-  'temperature': 0.9,
-  'frequency_penalty': 0.2,
-  'presence_penalty': 0.6,
-  'change_personality_rate': 0.1,
+  # 'chime_in_rate': 0.4,
+  # 'temperature': 0.9,
+  # 'frequency_penalty': 0.2,
+  # 'presence_penalty': 0.6,
+  # 'change_personality_rate': 0.1,
+  'chime_in_rate': random.random(),
+  'temperature': random.random(),
+  'frequency_penalty': random.random(),
+  'presence_penalty': random.random(),
+  'change_personality_rate': random.random(),
 }
 
 PERSONALITY_TO_MESSAGES = {}
@@ -52,6 +57,7 @@ async def on_ready(*a, **kw):
       print('channel:', channel)
       if hasattr(channel, 'send'):
         await admin_message(channel, 'bot rebooted')
+        await admin_message_(f'```bot_name: {g.bot_nme}\n{json.dumps(vars, indent=2)}```')
 
 @client.event
 async def on_message(message):
