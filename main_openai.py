@@ -88,7 +88,7 @@ async def on_message(message):
   elif message.content.startswith(',set '):
     var, val_str = message.content.split(',set ', 1)[1].rsplit(' ', 1)
     try:
-      val = float(val[-1])
+      val = float(val_str)
     except ValueError:
       pass
     else:
