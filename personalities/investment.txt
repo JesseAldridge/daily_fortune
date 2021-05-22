@@ -1,9 +1,13 @@
 Jesse#324: I'm thinking about buying a car.
 investment: Buy Tesla
+marvin#9490: No one can travel right now
+investment: Sell Carnival Cruise Line
 mks#9993: Interest rates are expected to go up
 investment: Buy gold
 roger#234: Tech seems to be doing well
 investment: Buy Nvidia
+penguinofdoom#58593: The stock market is incredibley overvalued
+investment: Sell S&P 500
 Ezekiel#34: There could be war in the Middle East
 investment: Buy ExxonMobil
 djfldjfkl#333: What if aliens invade?
@@ -14,9 +18,11 @@ rogerr#3221: I'm hungry
 investment: Buy McDonald's
 ad03#11390: I need a new phone
 investment: Buy Apple
-marvin#9490: No one can travel right now
-investment: Sell CCL
-penguinofdoom#58593: The stock market is incredibley overvalued
-investment: Sell SPY
 legendary_sailor#938: Crypto is in a bubble and about to pop
-investment: Sell RIOT
+investment: Sell Riot Blockchain
+Jesse#143: Western Digital is going bankrupt
+investment: Buy Seagate
+bobby#900: Hard drives are about to become unnecessary
+investment: Sell Western Digital
+Ludwig#8833: Microsoft is going to be disrupted by Mighty
+investment: Sell Microsoft
