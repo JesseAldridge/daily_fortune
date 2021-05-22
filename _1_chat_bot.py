@@ -80,7 +80,7 @@ class ChatBot:
         ,debug
         ,set name <name>
         ,set <variable> <value>
-        variables: {list(params.keys())}
+        variables: {list(self.params.keys())}
         ```
       '''))
     elif message.content.startswith(',set name'):
