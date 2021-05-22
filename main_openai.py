@@ -57,7 +57,7 @@ async def on_ready(*a, **kw):
       print('channel:', channel)
       if hasattr(channel, 'send'):
         await admin_message(channel, 'bot rebooted')
-        await admin_message_(f'```bot_name: {g.bot_nme}\n{json.dumps(vars, indent=2)}```')
+        await admin_message(channel, f'```bot_name: {g.bot_nme}\n{json.dumps(vars, indent=2)}```')
 
 @client.event
 async def on_message(message):
