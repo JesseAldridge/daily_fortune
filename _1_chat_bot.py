@@ -51,11 +51,12 @@ class ChatBot:
 
   async def set_personality(self, name):
     self.personality = personality = self.name_to_personality.get(name)
-    if not personality:
+    await self.admin_message(f'set personality to: {name}')
+    if personality is None:
+      await self.admin_message(f'personality not found')
       return None
     self.recent_messages = personality.prompt_lines
     self.params.update(personality.params)
-    await self.admin_message(f'set personality to: {name}')
     return personality
 
   async def set_random_personality(self):
@@ -94,8 +95,7 @@ class ChatBot:
       '''))
     elif msg_str.startswith(',set name') or msg_str.startswith(',set personality'):
       bot_name = msg_str.split()[-1]
-      is_found = await self.set_personality(bot_name) is not None
-      await self.admin_message(f'set bot name to {bot_name}; personality found: {is_found}')
+      await self.set_personality(bot_name)
     elif msg_str.startswith(',set '):
       await self.set_variable(msg_str)
     elif self.should_chime_in(msg_str):
