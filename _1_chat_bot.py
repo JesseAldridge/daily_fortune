@@ -102,6 +102,8 @@ class ChatBot:
   def should_chime_in(self, msg_str):
     if msg_str.strip().endswith('?'):
       return True
+    if msg_str.strip().startswith('$'):
+      return True
     return random.random() < self.params['chime_in_rate']
 
   async def set_variable(self, msg_str):
