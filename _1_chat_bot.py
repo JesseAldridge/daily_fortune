@@ -60,9 +60,6 @@ class ChatBot:
     msg_str = message.content
     print('on message:', msg_str)
 
-    if msg_str.startswith(',') or msg_str.startswith('*admin*:'):
-      return
-
     if ':: ' in msg_str:
       msg_str = msg_str.split(':: ', 1)[1].strip()
 
