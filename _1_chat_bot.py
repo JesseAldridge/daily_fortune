@@ -64,20 +64,23 @@ class ChatBot:
     self.set_personality(new_name)
 
   async def on_message(self, message):
-    print('on message:', message.content)
+    msg_str = message.content
+    print('on message:', msg_str)
 
     author = self.personality.name if 'daily fortune#' in str(message.author) else message.author
 
-    if not message.content.startswith(',') and not message.content.startswith('*admin*:'):
-      self.recent_messages.append(f'{author}: {message.content}')
+    if not msg_str.startswith(',') and not msg_str.startswith('*admin*:'):
+      if msg_str.startswith('$ ') and len(msg_str) > 2:
+        msg_str = msg_str[2:]
+      self.recent_messages.append(f'{author}: {msg_str}')
       self.recent_messages = self.recent_messages[-20:]
 
     if message.author == self.client.user:
       return
 
-    if message.content == ',debug':
+    if msg_str == ',debug':
       await self.debug_dump()
-    elif message.content == ',help':
+    elif msg_str == ',help':
       await self.admin_message(textwrap.dedent(f'''
         ```
         ,debug
@@ -86,15 +89,15 @@ class ChatBot:
         variables: {list(self.modifiable_params)}
         ```
       '''))
-    elif message.content.startswith(',set name'):
-      bot_name = message.content.split()[-1]
+    elif msg_str.startswith(',set name'):
+      bot_name = msg_str.split()[-1]
       is_found = self.set_personality(bot_name) is not None
       await self.admin_message(f'set bot name to {bot_name}; personality found: {is_found}')
       if not is_found:
         self.bot_name += f'#{int(random.random() * 1000)}'
-    elif message.content.startswith(',set '):
-      await self.set_variable(message.content)
-    elif self.should_chime_in(message.content):
+    elif msg_str.startswith(',set '):
+      await self.set_variable(msg_str)
+    elif self.should_chime_in(msg_str):
       await self.chime_in(message)
       if random.random() < self.params['change_personality_rate']:
         self.set_random_personality()
@@ -128,7 +131,7 @@ class ChatBot:
     self.params[var] = val
     await self.admin_message(f'set {var} to {val}')
 
-  async def chime_in(self, message):
+  async def chime_in(self):
     prompt = '\n'.join(self.recent_messages) + f'\n{self.personality.name}:'
     print('prompt:', prompt)
 
