@@ -67,7 +67,8 @@ class ChatBot:
     msg_str = message.content
     print('on message:', msg_str)
 
-    if 'daily fortune#' in str(message.author):
+    author = str(message.author)
+    if 'daily fortune#' in author:
       author = self.get_bot_name()
 
     if not msg_str.startswith(',') and not msg_str.startswith('*admin*:'):
