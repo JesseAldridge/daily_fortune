@@ -1,1 +1,4 @@
-Jesse#9248:
+Jesse#9248: I don't know. Even if there is it's still garbage UX if you have to go hunting for it.
+penguin: that is a good point.
+mks#4288: You probably want to be notified in case it breaks extensions, etc.
+penguin: I do want to be notified in case it breaks extensions, etc.
