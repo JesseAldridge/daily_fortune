@@ -98,6 +98,7 @@ class ChatBot:
     elif msg_str.startswith(',set '):
       await self.set_variable(msg_str)
     elif self.should_chime_in(msg_str):
+      print('chiming in...')
       await self.chime_in()
       if random.random() < self.params['change_personality_rate']:
         self.set_random_personality()
@@ -105,7 +106,7 @@ class ChatBot:
   def should_chime_in(self, msg_str):
     if msg_str.strip().endswith('?'):
       return True
-    if msg_str.strip().startswith('$'):
+    if msg_str.strip().startswith('$ '):
       return True
     return random.random() < self.params['chime_in_rate']
 
