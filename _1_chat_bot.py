@@ -60,8 +60,8 @@ class ChatBot:
     msg_str = message.content
     print('on message:', msg_str)
 
-    if ':: ' in msg_str:
-      msg_str = msg_str.split(':: ', 1)[1].strip()
+    if '**: ' in msg_str:
+      msg_str = msg_str.split('**: ', 1)[1].strip()
 
     author = str(message.author)
     if message.author == self.client.user:
@@ -81,7 +81,7 @@ class ChatBot:
     self.last_personality_name = personality.name
     response_str = await personality.get_response()
     if response_str:
-      await self.channel.send(f'{personality.name}:: {response_str}')
+      await self.channel.send(f'**{personality.name}**: {response_str}')
 
   async def admin_message(self, msg):
     await self.channel.send(f'*admin*: {msg}')
