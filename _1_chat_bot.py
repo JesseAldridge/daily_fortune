@@ -19,6 +19,7 @@ class ChatBot:
   async def init(self, channel, client):
     self.channel = channel
     self.client = client
+    self.throttle_count = 10
 
     with open(os.path.expanduser('~/open_ai.json')) as f:
       openai.api_key = json.loads(f.read()).get('api_key')
@@ -82,8 +83,10 @@ class ChatBot:
       self.recent_messages.append(f'{author}: {msg_str}')
       self.recent_messages = self.recent_messages[-20:]
 
-    if message.author == self.client.user:
+    if message.author == self.client.user and self.throttle_count <= 0:
       return
+
+    self.throttle_count -= 1
 
     if msg_str == ',debug':
       await self.debug_dump()
