@@ -67,7 +67,8 @@ class ChatBot:
     msg_str = message.content
     print('on message:', msg_str)
 
-    author = self.personality.name if 'daily fortune#' in str(message.author) else message.author
+    if 'daily fortune#' in str(message.author):
+      author = self.get_bot_name()
 
     if not msg_str.startswith(',') and not msg_str.startswith('*admin*:'):
       if msg_str.startswith('$ ') and len(msg_str) > 2:
@@ -93,8 +94,6 @@ class ChatBot:
       bot_name = msg_str.split()[-1]
       is_found = self.set_personality(bot_name) is not None
       await self.admin_message(f'set bot name to {bot_name}; personality found: {is_found}')
-      if not is_found:
-        self.bot_name += f'#{int(random.random() * 1000)}'
     elif msg_str.startswith(',set '):
       await self.set_variable(msg_str)
     elif self.should_chime_in(msg_str):
@@ -132,7 +131,7 @@ class ChatBot:
     await self.admin_message(f'set {var} to {val}')
 
   async def chime_in(self):
-    prompt = '\n'.join(self.recent_messages) + f'\n{self.personality.name}:'
+    prompt = '\n'.join(self.recent_messages) + f'\n{self.get_bot_name()}:'
     print('prompt:', prompt)
 
     response = openai.Completion.create(
@@ -152,10 +151,12 @@ class ChatBot:
     if response_text:
       await self.channel.send(response_text)
 
+  def get_bot_name(self):
+    return self.personality.name if self.personality else 'Jane#8278'
+
   async def debug_dump(self):
-    name = self.personality.name
     params_str = json.dumps(self.params, indent=2)
-    await self.admin_message(f'```bot_name: {name}\n{params_str}```')
+    await self.admin_message(f'```bot_name: {self.get_bot_name()}\n{params_str}```')
 
   async def admin_message(self, msg):
     await self.channel.send(f'*admin*: {msg}')
