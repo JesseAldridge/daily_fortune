@@ -13,8 +13,8 @@ class MyClient(discord.Client):
       for channel in guild.channels:
         print('channel:', channel)
         if hasattr(channel, 'send'):
-          self.chat_bot = self.ChatBotClass(channel, self)
-          await self.chat_bot.admin_message('bot launched')
+          self.chat_bot = self.ChatBotClass()
+          await self.chat_bot.init(channel, self)
           return
 
   async def on_message(self, message):

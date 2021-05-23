@@ -16,7 +16,7 @@ class Personality:
       self.params = json.loads(f.read())
 
 class ChatBot:
-  def __init__(self, channel, client):
+  async def init(self, channel, client):
     self.channel = channel
     self.client = client
 
@@ -46,22 +46,23 @@ class ChatBot:
         name = os.path.splitext(os.path.basename(path))[0]
         self.name_to_personality[name] = Personality(name)
 
-    self.set_random_personality()
+    await self.admin_message('bot launched')
+    await self.set_random_personality()
 
-  def set_personality(self, name):
+  async def set_personality(self, name):
     self.personality = personality = self.name_to_personality.get(name)
     if not personality:
       return None
     self.recent_messages = personality.prompt_lines
     self.params.update(personality.params)
-    print('set personality to:', name)
+    await self.admin_message(f'set personality to: {name}')
     return personality
 
-  def set_random_personality(self):
+  async def set_random_personality(self):
     personality_names = list(self.name_to_personality.keys())
     print('personality_names:', personality_names)
     new_name = random.choice(personality_names)
-    self.set_personality(new_name)
+    await self.set_personality(new_name)
 
   async def on_message(self, message):
     msg_str = message.content
@@ -93,7 +94,7 @@ class ChatBot:
       '''))
     elif msg_str.startswith(',set name'):
       bot_name = msg_str.split()[-1]
-      is_found = self.set_personality(bot_name) is not None
+      is_found = await self.set_personality(bot_name) is not None
       await self.admin_message(f'set bot name to {bot_name}; personality found: {is_found}')
     elif msg_str.startswith(',set '):
       await self.set_variable(msg_str)
@@ -101,7 +102,7 @@ class ChatBot:
       print('chiming in...')
       await self.chime_in()
       if random.random() < self.params['change_personality_rate']:
-        self.set_random_personality()
+        await self.set_random_personality()
 
   def should_chime_in(self, msg_str):
     if msg_str.strip().endswith('?'):
