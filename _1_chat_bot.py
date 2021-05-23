@@ -26,16 +26,18 @@ class ChatBot:
     self.personality = None
     self.recent_messages = []
 
-    self.params = {
+    self.default_params = {
       'chime_in_rate': 1,
-      'temperature': 0.9,
-      'frequency_penalty': 0.2,
-      'presence_penalty': 0.6,
+      'temperature': 0.7,
+      'frequency_penalty': 0,
+      'presence_penalty': 0,
       'change_personality_rate': 0.1,
       'max_tokens': 200,
       'top_p': 1,
       'stop': ["\n"],
     }
+
+    self.params = self.default_params.copy()
 
     unmodifiable_params = ('max_tokens', 'stop')
     self.modifiable_params = [k for k in self.params.keys() if k not in unmodifiable_params]
@@ -54,6 +56,7 @@ class ChatBot:
     await self.admin_message(f'set personality to: {name}')
     if personality is None:
       await self.admin_message(f'personality not found')
+      self.params = self.default_params.copy()
       return None
     self.recent_messages = personality.prompt_lines
     self.params.update(personality.params)
