@@ -92,7 +92,7 @@ class ChatBot:
         variables: {list(self.modifiable_params)}
         ```
       '''))
-    elif msg_str.startswith(',set name'):
+    elif msg_str.startswith(',set name') or msg_str.startswith(',set personality'):
       bot_name = msg_str.split()[-1]
       is_found = await self.set_personality(bot_name) is not None
       await self.admin_message(f'set bot name to {bot_name}; personality found: {is_found}')
