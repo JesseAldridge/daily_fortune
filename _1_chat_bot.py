@@ -10,7 +10,8 @@ class Personality:
     self.name = name
 
     with open(os.path.join('personalities', f'{name}.txt')) as f:
-      self.recent_messages = f.read().strip().splitlines()
+      self.personality_lines = f.read().strip().splitlines()
+    self.recent_messages = list(self.personality_lines)
 
     with open(os.path.join('personalities', f'{name}.json')) as f:
       self.params = json.loads(f.read())
@@ -38,7 +39,7 @@ class ChatBot:
   async def init(self, channel, client):
     self.channel = channel
     self.client = client
-    self.throttle_count = 50
+    self.throttle_count = 20
     self.last_personality_name = None
 
     with open(os.path.expanduser('~/open_ai.json')) as f:
@@ -74,12 +75,12 @@ class ChatBot:
     self.throttle_count -= 1
     personalities = list(self.name_to_personality.values())
 
+    self.recent_messages.append(f'{author}: {msg_str}')
+    self.recent_messages = self.recent_messages[-25:]
     for personality in personalities:
-      recent_messages = personality.recent_messages
-      recent_messages.append(f'{author}: {msg_str}')
-      personality.recent_messages = recent_messages[-20:]
+      personality.recent_messages = personality.personality_lines + self.recent_messages
 
-    personality = self.name_to_personality[random.choice(('penguin', 'navy_seal', 'cranky'))]
+    personality = self.name_to_personality[random.choice(('penguin', 'cranky', 'navy_seal'))]
     self.last_personality_name = personality.name
     response_str = await personality.get_response()
     if response_str:
