@@ -98,7 +98,7 @@ class ChatBot:
     elif msg_str.startswith(',set '):
       await self.set_variable(msg_str)
     elif self.should_chime_in(msg_str):
-      await self.chime_in(message)
+      await self.chime_in()
       if random.random() < self.params['change_personality_rate']:
         self.set_random_personality()
 
