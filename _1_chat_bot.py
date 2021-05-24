@@ -68,6 +68,7 @@ class ChatBot:
       if self.throttle_count <= 0:
         return
       author = self.last_personality_name
+    author = author.rsplit('#', 1)[0]
 
     self.throttle_count -= 1
     personalities = list(self.name_to_personality.values())

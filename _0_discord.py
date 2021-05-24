@@ -2,6 +2,7 @@ import os, json
 
 import discord
 
+
 class MyClient(discord.Client):
   def __init__(self, ChatBotClass, *a, **kw):
     discord.Client.__init__(self, *a, **kw)
