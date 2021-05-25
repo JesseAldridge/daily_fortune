@@ -69,10 +69,9 @@ class ChatBot:
     personalities = list(self.name_to_personality.values())
 
     self.recent_messages.append(f'{author}: {msg_str}')
-    self.recent_messages = self.recent_messages[-25:]
+    self.recent_messages = self.recent_messages[-100:]
     for personality in personalities:
-      # personality.recent_messages = personality.personality_lines + self.recent_messages
-      personality.recent_messages = list(self.recent_messages)
+      personality.recent_messages = (personality.personality_lines + self.recent_messages)[:-30]
 
     if self.throttle_count <= 0:
       return
