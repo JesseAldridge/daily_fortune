@@ -60,26 +60,24 @@ class ChatBot:
     msg_str = message.content
     print('on message:', msg_str)
 
+    author = str(message.author).rsplit('#', 1)[0]
     if '**: ' in msg_str:
-      msg_str = msg_str.split('**: ', 1)[1].strip()
+      author, msg_str = (s.strip() for s in msg_str.split('**: ', 1))
+      author = author.split('**', 1)[1]
+      self.throttle_count -= 1
 
-    author = str(message.author)
-    if message.author == self.client.user:
-      if self.throttle_count <= 0:
-        return
-      author = self.last_personality_name
-    author = author.rsplit('#', 1)[0]
-
-    self.throttle_count -= 1
     personalities = list(self.name_to_personality.values())
 
     self.recent_messages.append(f'{author}: {msg_str}')
     self.recent_messages = self.recent_messages[-25:]
     for personality in personalities:
-      personality.recent_messages = personality.personality_lines + self.recent_messages
+      # personality.recent_messages = personality.personality_lines + self.recent_messages
+      personality.recent_messages = list(self.recent_messages)
+
+    if self.throttle_count <= 0:
+      return
 
     personality = self.name_to_personality[random.choice(('penguin', 'cranky', 'navy_seal'))]
-    self.last_personality_name = personality.name
     response_str = await personality.get_response()
     if response_str:
       await self.channel.send(f'**{personality.name}**: {response_str}')
