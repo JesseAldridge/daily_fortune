@@ -59,6 +59,7 @@ class ChatBot:
   async def on_message(self, message):
     msg_str = message.content
     print('on message:', msg_str)
+    print('message author:', message.author)
 
     author = str(message.author).rsplit('#', 1)[0]
     if '**: ' in msg_str:
