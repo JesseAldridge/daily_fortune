@@ -74,7 +74,7 @@ class ChatBot:
     for personality in personalities:
       personality.recent_messages = (personality.personality_lines + self.recent_messages)[-30:]
 
-    if self.throttle_count <= 0:
+    if self.throttle_count <= 0 and message.author == self.client.user:
       return
 
     personality = self.name_to_personality[random.choice(('penguin', 'cranky', 'navy_seal'))]
