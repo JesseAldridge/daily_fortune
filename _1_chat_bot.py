@@ -72,7 +72,7 @@ class ChatBot:
     self.recent_messages.append(f'{author}: {msg_str}')
     self.recent_messages = self.recent_messages[-100:]
     for personality in personalities:
-      personality.recent_messages = (personality.personality_lines + self.recent_messages)[:-30]
+      personality.recent_messages = (personality.personality_lines + self.recent_messages)[-30:]
 
     if self.throttle_count <= 0:
       return
@@ -83,7 +83,7 @@ class ChatBot:
       await self.channel.send(f'**{personality.name}**: {response_str}')
 
   async def admin_message(self, msg):
-    await self.channel.send(f'*admin*: {msg}')
+    await self.channel.send(f'**admin**: {msg}')
 
 def main():
   _0_discord.main(ChatBot)
