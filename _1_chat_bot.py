@@ -1,4 +1,4 @@
-import os, json, glob, random, textwrap
+import os, json, glob, random, textwrap, threading
 
 import openai
 
@@ -39,7 +39,6 @@ class ChatBot:
   async def init(self, channel, client):
     self.channel = channel
     self.client = client
-    self.throttle_count = 20
     self.last_personality_name = None
 
     with open(os.path.expanduser('~/open_ai.json')) as f:
@@ -54,7 +53,18 @@ class ChatBot:
         name = os.path.splitext(os.path.basename(path))[0]
         self.name_to_personality[name] = Personality(name)
 
+
+    bot = self
+    def reset_throttle():
+      bot.throttle_count = 20
+      t = threading.Timer(60 * 60 * 24 * random.random(), reset_throttle)
+      t.daemon = True
+      t.start()
+    reset_throttle()
+
     await self.admin_message('bot launched')
+
+
 
   async def on_message(self, message):
     msg_str = message.content
@@ -74,7 +84,7 @@ class ChatBot:
     for personality in personalities:
       personality.recent_messages = personality.personality_lines + self.recent_messages
 
-    if self.throttle_count <= 0 and message.author == self.client.user:
+    if self.throttle_count <= 0:
       return
 
     personality = self.name_to_personality[random.choice(('penguin', 'cranky', 'navy_seal'))]
