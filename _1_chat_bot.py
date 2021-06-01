@@ -1,4 +1,4 @@
-import os, json, glob, random, textwrap, threading
+import os, json, glob, random, textwrap, threading, asyncio
 
 import openai
 
@@ -55,6 +55,7 @@ class ChatBot:
 
 
     bot = self
+    self.gas = 20
     def increase_gas():
       bot.gas += 1
       bot.gas = max(bot.gas, 20)
@@ -88,6 +89,7 @@ class ChatBot:
     if self.gas <= 0:
       return
 
+    await asyncio.sleep(10 * random.random())
     personality = self.name_to_personality[random.choice(('penguin', 'cranky', 'navy_seal'))]
     response_str = await personality.get_response()
     if response_str:
