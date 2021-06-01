@@ -55,12 +55,13 @@ class ChatBot:
 
 
     bot = self
-    def reset_throttle():
-      bot.throttle_count = 20
-      t = threading.Timer(60 * 60 * 24 * random.random(), reset_throttle)
+    def increase_gas():
+      bot.gas += 1
+      bot.gas = max(bot.gas, 20)
+      t = threading.Timer(60 * 60 * random.random(), increase_gas)
       t.daemon = True
       t.start()
-    reset_throttle()
+    increase_gas()
 
     await self.admin_message('bot launched')
 
@@ -75,7 +76,7 @@ class ChatBot:
     if '**: ' in msg_str:
       author, msg_str = (s.strip() for s in msg_str.split('**: ', 1))
       author = author.split('**', 1)[1]
-      self.throttle_count -= 1
+      self.gas -= 1
 
     personalities = list(self.name_to_personality.values())
 
@@ -84,7 +85,7 @@ class ChatBot:
     for personality in personalities:
       personality.recent_messages = personality.personality_lines + self.recent_messages
 
-    if self.throttle_count <= 0:
+    if self.gas <= 0:
       return
 
     personality = self.name_to_personality[random.choice(('penguin', 'cranky', 'navy_seal'))]
