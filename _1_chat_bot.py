@@ -58,7 +58,7 @@ class ChatBot:
     self.gas = 20
     def increase_gas():
       bot.gas += 1
-      bot.gas = max(bot.gas, 20)
+      bot.gas = min(bot.gas, 20)
       t = threading.Timer(60 * 60 * random.random(), increase_gas)
       t.daemon = True
       t.start()
@@ -89,7 +89,7 @@ class ChatBot:
     if self.gas <= 0:
       return
 
-    await asyncio.sleep(10 * random.random())
+    await asyncio.sleep(20 * random.random())
     personality = self.name_to_personality[random.choice(('penguin', 'cranky', 'navy_seal'))]
     response_str = await personality.get_response()
     if response_str:
