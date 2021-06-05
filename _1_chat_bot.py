@@ -53,6 +53,7 @@ class ChatBot:
         name = os.path.splitext(os.path.basename(path))[0]
         self.name_to_personality[name] = Personality(name)
 
+    self.waiting_for_response = False
 
     bot = self
     self.gas = 20
@@ -78,6 +79,8 @@ class ChatBot:
       author, msg_str = (s.strip() for s in msg_str.split('**: ', 1))
       author = author.split('**', 1)[1]
       self.gas -= 1
+    else:
+      self.waiting_for_response = False
 
     personalities = list(self.name_to_personality.values())
 
@@ -86,8 +89,10 @@ class ChatBot:
     for personality in personalities:
       personality.recent_messages = personality.personality_lines + self.recent_messages
 
-    if self.gas <= 0:
+    if self.waiting_for_response or self.gas <= 0:
       return
+
+    self.waiting_for_response = random.random() < 0.2
 
     await asyncio.sleep(20 * random.random())
     personality = self.name_to_personality[random.choice(('penguin', 'cranky', 'navy_seal'))]
