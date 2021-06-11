@@ -61,7 +61,7 @@ class ChatBot:
     def increase_gas():
       bot.gas += 1
       bot.gas = min(bot.gas, MAX_GAS)
-      t = threading.Timer(60 * 60 * random.random(), increase_gas)
+      t = threading.Timer(60 * 60 * 2 * random.random(), increase_gas)
       t.daemon = True
       t.start()
     increase_gas()
@@ -91,6 +91,10 @@ class ChatBot:
       personality.recent_messages = personality.personality_lines + self.recent_messages
 
     if self.waiting_for_response or self.gas <= 0:
+      if self.waiting_for_response:
+        print('waiting for response')
+      else:
+        print('out of gas')
       return
 
     self.waiting_for_response = random.random() < 0.2
