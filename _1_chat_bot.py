@@ -68,8 +68,6 @@ class ChatBot:
 
     await self.admin_message('bot launched')
 
-
-
   async def on_message(self, message):
     msg_str = message.content
     print('on message:', msg_str)
