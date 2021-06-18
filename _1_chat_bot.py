@@ -56,12 +56,12 @@ class ChatBot:
     self.waiting_for_response = False
 
     bot = self
-    MAX_GAS = 15
+    MAX_GAS = 7
     self.gas = MAX_GAS
     def increase_gas():
       bot.gas += 1
       bot.gas = min(bot.gas, MAX_GAS)
-      t = threading.Timer(60 * 60 * 2 * random.random(), increase_gas)
+      t = threading.Timer(60 * 60 * 4 * random.random(), increase_gas)
       t.daemon = True
       t.start()
     increase_gas()
