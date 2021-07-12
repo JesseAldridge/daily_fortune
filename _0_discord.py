@@ -25,6 +25,7 @@ def main(ChatBot):
   with open(os.path.expanduser('~/discord.json')) as f:
     discord_config = json.loads(f.read())
 
+  print('creating client...')
   client = MyClient(ChatBot)
   client.run(discord_config['bot_token'])
 
