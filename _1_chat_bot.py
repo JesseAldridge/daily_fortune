@@ -66,7 +66,7 @@ class ChatBot:
       t.start()
     increase_gas()
 
-    async def fortune_loop():
+    def fortune_loop():
       raw_buffer = subprocess.Popen('fortune', stdout=subprocess.PIPE).communicate()[0]
       encoding = chardet.detect(raw_buffer)
       message = raw_buffer.decode(encoding['encoding'])
@@ -74,8 +74,7 @@ class ChatBot:
       t = threading.Timer(60 * 60 * 24, fortune_loop)
       t.daemon = True
       t.start()
-
-    await fortune_loop()
+    fortune_loop()
 
   async def on_message(self, message):
     msg_str = message.content
