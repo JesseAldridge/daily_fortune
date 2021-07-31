@@ -1,6 +1,7 @@
 import os, json, glob, random, textwrap, threading, asyncio, subprocess
 
 import openai, chardet
+from discord.ext import tasks
 
 import _0_discord
 
@@ -66,15 +67,13 @@ class ChatBot:
       t.start()
     increase_gas()
 
-    def fortune_loop():
+    @tasks.loop(seconds=60 * 60 * 24)
+    async def fortune_loop():
       raw_buffer = subprocess.Popen('fortune', stdout=subprocess.PIPE).communicate()[0]
       encoding = chardet.detect(raw_buffer)
       message = raw_buffer.decode(encoding['encoding'])
       await self.channel.send('```\n' + message + '\n```')
-      t = threading.Timer(60 * 60 * 24, fortune_loop)
-      t.daemon = True
-      t.start()
-    fortune_loop()
+    fortune_loop.start()
 
   async def on_message(self, message):
     msg_str = message.content
@@ -105,7 +104,7 @@ class ChatBot:
 
     self.waiting_for_response = random.random() < 0.5
 
-    await asyncio.sleep(20 * random.random())
+    await asyncio.sleep(20 * random.random() + 5)
     personality = self.name_to_personality[random.choice(('penguin', 'cranky', 'navy_seal'))]
     response_str = await personality.get_response()
     if response_str:
