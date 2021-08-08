@@ -102,7 +102,7 @@ class ChatBot:
         print('out of gas')
       return
 
-    self.waiting_for_response = random.random() < 0.5
+    self.waiting_for_response = random.random() < 0.1
 
     await asyncio.sleep(20 * random.random() + 5)
     personality = self.name_to_personality[random.choice(('penguin', 'cranky', 'navy_seal'))]
