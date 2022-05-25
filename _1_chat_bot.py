@@ -75,6 +75,7 @@ class ChatBot:
 
   async def on_message(self, message):
     if random.random() < .2:
+      print('not responding')
       return
 
     msg_str = message.content
