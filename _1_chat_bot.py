@@ -22,7 +22,7 @@ class Personality:
     print('prompt:', prompt)
 
     response = openai.Completion.create(
-      engine="davinci",
+      engine="text-davinci-001",
       prompt=prompt,
       temperature=self.params['temperature'],
       max_tokens=self.params['max_tokens'],
@@ -76,6 +76,9 @@ class ChatBot:
     fortune_loop.start()
 
   async def on_message(self, message):
+    if random.random() < .2:
+      return
+
     msg_str = message.content
     print('on message:', msg_str)
     print('message author:', message.author)
@@ -105,7 +108,9 @@ class ChatBot:
     self.waiting_for_response = random.random() < 0.1
 
     await asyncio.sleep(20 * random.random() + 5)
-    personality = self.name_to_personality[random.choice(('penguin', 'cranky', 'navy_seal'))]
+    personality = self.name_to_personality[
+      random.choice(('penguin', 'cranky', 'navy_seal', 'investment'))
+    ]
     response_str = await personality.get_response()
     if response_str:
       await self.channel.send(f'**{personality.name}**: {response_str}')
