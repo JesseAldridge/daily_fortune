@@ -80,13 +80,14 @@ class ChatBot:
 
     msg_str = message.content
     print('on message:', msg_str)
-    print('message author:', message.author)
 
     author = str(message.author).rsplit('#', 1)[0]
-    if '**: ' in msg_str:
-      author, msg_str = (s.strip() for s in msg_str.split('**: ', 1))
+    if '**:' in msg_str:
+      author, msg_str = (s.strip() for s in msg_str.split('**:', 1))
       author = author.split('**', 1)[1]
       self.gas -= 1
+
+    print('message author:', message.author)
 
     personalities = list(self.name_to_personality.values())
 
@@ -103,9 +104,8 @@ class ChatBot:
     personality = self.name_to_personality[
       random.choice(('penguin', 'cranky', 'navy_seal'))
     ]
-    response_str = await personality.get_response()
-    if response_str:
-      await self.channel.send(f'**{personality.name}**: {response_str}')
+    response_str = await personality.get_response() or ''
+    await self.channel.send(f'**{personality.name}**: {response_str}')
 
   async def admin_message(self, msg):
     await self.channel.send(f'**admin**: {msg}')
