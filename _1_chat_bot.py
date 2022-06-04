@@ -19,7 +19,7 @@ class Personality:
 
   async def get_response(self):
     prompt = '\n'.join(self.recent_messages) + f'\n{self.name}:'
-    print('prompt:', prompt)
+    print('prompt:\n---===---', prompt, '\n---===----')
 
     response = openai.Completion.create(
       engine="text-davinci-002",
