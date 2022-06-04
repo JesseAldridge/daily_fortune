@@ -22,7 +22,7 @@ class Personality:
     print('prompt:', prompt)
 
     response = openai.Completion.create(
-      engine="text-davinci-001",
+      engine="text-davinci-002",
       prompt=prompt,
       temperature=self.params['temperature'],
       max_tokens=self.params['max_tokens'],
