@@ -29,7 +29,7 @@ class Personality:
       top_p=self.params['top_p'],
       frequency_penalty=self.params['frequency_penalty'],
       presence_penalty=self.params['presence_penalty'],
-      stop=self.params['stop'],
+      # stop=self.params['stop'],
     )
 
     print('response:', response)
@@ -87,7 +87,7 @@ class ChatBot:
       author = author.split('**', 1)[1]
       self.gas -= 1
 
-    print('message author:', message.author)
+    print('author:', author)
 
     personalities = list(self.name_to_personality.values())
 
