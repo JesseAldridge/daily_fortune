@@ -74,9 +74,9 @@ class ChatBot:
     fortune_loop.start()
 
   async def on_message(self, message):
-    if random.random() < .2:
-      print('not responding')
-      return
+    # if random.random() < .2:
+    #   print('not responding')
+    #   return
 
     msg_str = message.content
     print('on message:', msg_str)
