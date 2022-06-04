@@ -29,7 +29,7 @@ class Personality:
       top_p=self.params['top_p'],
       frequency_penalty=self.params['frequency_penalty'],
       presence_penalty=self.params['presence_penalty'],
-      # stop=self.params['stop'],
+      stop=['\n'],
     )
 
     print('response:', response)
