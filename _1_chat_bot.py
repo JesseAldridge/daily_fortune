@@ -19,7 +19,7 @@ class Personality:
 
   async def get_response(self):
     prompt = '\n'.join(self.recent_messages) + f'\n{self.name}:'
-    print('prompt:\n---===---\n', prompt, '\n---===----')
+    print(f'(((((({prompt}))))))')
 
     response = openai.Completion.create(
       engine="text-davinci-002",
@@ -29,12 +29,12 @@ class Personality:
       top_p=self.params['top_p'],
       frequency_penalty=self.params['frequency_penalty'],
       presence_penalty=self.params['presence_penalty'],
-      stop=['\n'],
+      stop=['------'],
     )
 
     print('response:', response)
 
-    return response.choices[0].text
+    return response.choices[0].text.strip().rstrip('------')
 
 class ChatBot:
   async def init(self, channel, client):
@@ -91,8 +91,9 @@ class ChatBot:
 
     personalities = list(self.name_to_personality.values())
 
-    self.recent_messages.append(f'{author}: {msg_str}')
-    self.recent_messages = self.recent_messages[-30:]
+    self.recent_messages.append(f'{author}: {msg_str.strip()}')
+    self.recent_messages.append('\n------\n')
+    self.recent_messages = self.recent_messages[-50:]
     for personality in personalities:
       personality.recent_messages = personality.personality_lines + self.recent_messages
 
