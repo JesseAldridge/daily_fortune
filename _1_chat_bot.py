@@ -55,7 +55,7 @@ class ChatBot:
         self.name_to_personality[name] = Personality(name)
 
     bot = self
-    MAX_GAS = 7
+    MAX_GAS = 14
     self.gas = MAX_GAS
     def increase_gas():
       bot.gas += 1
@@ -103,7 +103,7 @@ class ChatBot:
 
     await asyncio.sleep(15 * random.random() + 5)
     personality = self.name_to_personality[
-      random.choice(('penguin', 'cranky', 'navy_seal'))
+      random.choice(('penguin', 'cranky', 'navy_seal', 'Einstein', 'Buddha'))
     ]
     response_str = await personality.get_response() or ''
     await self.channel.send(f'**{personality.name}**: {response_str}')
