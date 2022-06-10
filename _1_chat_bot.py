@@ -55,7 +55,7 @@ class ChatBot:
         self.name_to_personality[name] = Personality(name)
 
     bot = self
-    MAX_GAS = 14
+    MAX_GAS = 10
     self.gas = MAX_GAS
     def increase_gas():
       bot.gas += 1
