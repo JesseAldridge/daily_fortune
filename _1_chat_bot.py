@@ -103,7 +103,7 @@ class ChatBot:
 
     await asyncio.sleep(15 * random.random() + 5)
     personality = self.name_to_personality[
-      random.choice(('penguin', 'cranky', 'navy_seal', 'Einstein', 'Buddha'))
+      random.choice(('penguin', 'cranky', 'navy_seal', 'mrs_bennet'))
     ]
     response_str = await personality.get_response() or ''
     await self.channel.send(f'**{personality.name}**: {response_str}')
