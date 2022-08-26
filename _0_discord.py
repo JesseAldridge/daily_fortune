@@ -35,9 +35,6 @@ def test():
       self.channel = channel
       self.client = client
 
-    async def on_message(self, message):
-      print('message:', message.content)
-
   main(ChatBot)
 
 if __name__ == '__main__':
