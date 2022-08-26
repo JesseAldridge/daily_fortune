@@ -24,11 +24,11 @@ class ChatBot:
       response = openai.Completion.create(
         engine="text-davinci-002",
         prompt=prompt,
-        temperature=self.params['temperature'],
-        max_tokens=self.params['max_tokens'],
-        top_p=self.params['top_p'],
-        frequency_penalty=self.params['frequency_penalty'],
-        presence_penalty=self.params['presence_penalty'],
+        temperature=1,
+        max_tokens=500,
+        top_p=1,
+        frequency_penalty=0,
+        presence_penalty=0,
       )
 
       print('response:', response)

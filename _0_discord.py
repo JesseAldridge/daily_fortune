@@ -18,9 +18,6 @@ class MyClient(discord.Client):
           await self.chat_bot.init(channel, self)
           return
 
-  async def on_message(self, message):
-    await self.chat_bot.on_message(message)
-
 def main(ChatBot):
   with open(os.path.expanduser('~/discord.json')) as f:
     discord_config = json.loads(f.read())
