@@ -33,7 +33,7 @@ class ChatBot:
 
       print('response:', response)
 
-      message = f"Mushroom fact of the day:\n\n{response.choices[0].text.strip() or ''}"
+      message = f"Mushroom fact of the day:\n{response.choices[0].text.strip() or ''}"
       await self.channel.send(message)
     fortune_loop.start()
 
