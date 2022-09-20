@@ -26,13 +26,13 @@ def main(ChatBot):
   client = MyClient(ChatBot)
   client.run(discord_config['bot_token'])
 
-def test():
-  class ChatBot:
-    def __init__(self, channel, client):
-      self.channel = channel
-      self.client = client
+# def test():
+#   class ChatBot:
+#     def __init__(self, channel, client):
+#       self.channel = channel
+#       self.client = client
 
-  main(ChatBot)
+#   main(ChatBot)
 
-if __name__ == '__main__':
-  test()
+# if __name__ == '__main__':
+#   test()
