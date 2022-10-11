@@ -26,7 +26,7 @@ class ChatBot:
       ])
 
       if random.random() < .5:
-        prompt = ':'
+        prompt += ':'
       else:
         prompt += ' (utterly deranged and untrue):'
 
