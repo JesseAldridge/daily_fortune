@@ -16,10 +16,19 @@ class ChatBot:
 
     @tasks.loop(seconds=60 * 60 * 24)
     async def fortune_loop():
+      base_prompt = random.choice([
+        'Fun fact',
+        'Fun fact about the stock market',
+        'Fun historical fact',
+        'Fun fact about mushrooms',
+        'Fun fact about the human body',
+        'Fun fact about the universe',
+      ])
+
       if random.random() < .5:
-        prompt = 'Fun fact about mushrooms:'
+        prompt = ':'
       else:
-        prompt = 'Fun fact about mushrooms (utterly deranged and untrue):'
+        prompt += ' (utterly deranged and untrue):'
 
       response = openai.Completion.create(
         engine="text-davinci-002",
@@ -33,7 +42,7 @@ class ChatBot:
 
       print('response:', response)
 
-      message = f"Mushroom fact of the day:\n\n{response.choices[0].text.strip() or ''}"
+      message = f"{base_prompt}:\n\n{response.choices[0].text.strip() or ''}"
       await self.channel.send(message)
     fortune_loop.start()
 
