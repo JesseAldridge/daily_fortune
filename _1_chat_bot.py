@@ -26,9 +26,9 @@ class ChatBot:
       ])
 
       if random.random() < .5:
-        prompt += ':'
+        prompt = f'{base_prompt}:'
       else:
-        prompt += ' (utterly deranged and untrue):'
+        prompt = f'{base_prompt} (utterly deranged and untrue):'
 
       response = openai.Completion.create(
         engine="text-davinci-002",
