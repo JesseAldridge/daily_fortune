@@ -44,6 +44,7 @@ class ChatBot:
 
       message = f"{base_prompt}:\n\n{response.choices[0].text.strip() or ''}"
       await self.channel.send(message)
+      await self.channel.send(f'/imagine {message}')
     fortune_loop.start()
 
 def main():
