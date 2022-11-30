@@ -17,7 +17,6 @@ class ChatBot:
     @tasks.loop(seconds=60 * 60 * 24)
     async def fortune_loop():
       base_prompt = random.choice([
-        'Fun fact',
         'Fun fact about the stock market',
         'Fun historical fact',
         'Fun fact about mushrooms',
@@ -31,7 +30,7 @@ class ChatBot:
         prompt = f'{base_prompt} (utterly deranged and untrue):'
 
       response = openai.Completion.create(
-        engine="text-davinci-002",
+        engine="text-davinci-003",
         prompt=prompt,
         temperature=1,
         max_tokens=500,
