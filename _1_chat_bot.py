@@ -18,10 +18,18 @@ class ChatBot:
     async def fortune_loop():
       base_prompt = random.choice([
         'Fun fact about the stock market',
-        'Fun historical fact',
-        'Fun fact about mushrooms',
-        'Fun fact about the human body',
-        'Fun fact about the universe',
+        'Fun fact about summarization',
+        'Fun fact about web scraping',
+        'Fun fact about cognition',
+        'Fun fact about information management',
+        'Fun fact about computer science',
+        'Fun fact about information',
+        'Fun fact about learning',
+        'Fun fact about psychology',
+        'Fun fact about data',
+        'Fun fact about machine learning',
+        'Fun fact about wikipedia',
+        'Fun fact about twitter',
       ])
 
       if random.random() < .5:
