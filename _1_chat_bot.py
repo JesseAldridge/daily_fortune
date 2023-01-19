@@ -30,6 +30,19 @@ class ChatBot:
         'Fun fact about machine learning',
         'Fun fact about wikipedia',
         'Fun fact about twitter',
+        'Fun fact about the internet',
+        'Fun fact about the world',
+        'Fun fact about the universe',
+        'Fun fact about the future',
+        'Fun fact about the human computer interaction',
+        'Fun fact about medicine',
+        'Fun fact about cognition',
+        'Fun fact about human enhancement',
+        'Fun fact about the brain',
+        'Fun fact about the philosophy',
+        'Fun fact about the religion',
+        'Fun fact about the society',
+        'Fun fact about the culture',
       ])
 
       if random.random() < .5:
