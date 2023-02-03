@@ -34,15 +34,15 @@ class ChatBot:
         'Fun fact about the world',
         'Fun fact about the universe',
         'Fun fact about the future',
-        'Fun fact about the human computer interaction',
+        'Fun fact about human computer interaction',
         'Fun fact about medicine',
         'Fun fact about cognition',
         'Fun fact about human enhancement',
         'Fun fact about the brain',
-        'Fun fact about the philosophy',
-        'Fun fact about the religion',
-        'Fun fact about the society',
-        'Fun fact about the culture',
+        'Fun fact about philosophy',
+        'Fun fact about religion',
+        'Fun fact about society',
+        'Fun fact about culture',
       ])
 
       if random.random() < .5:
