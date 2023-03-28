@@ -5,6 +5,32 @@ from discord.ext import tasks
 
 import _0_discord
 
+def openai_call(request_string):
+  errors = (openai.error.RateLimitError, openai.error.ServiceUnavailableError,
+            openai.error.APIError, openai.error.Timeout, ConnectionResetError)
+  delay = 1
+
+  for i in range(10):
+    try:
+      completion = openai.ChatCompletion.create(
+        model="gpt-4",
+        messages=[{
+          "role": "user",
+          "content": request_string
+        }]
+      )
+
+      return completion['choices'][0]['message']['content']
+
+    except errors as e:
+      print(f"Error: {e}")
+      print(f"Waiting for {delay} seconds before retrying...")
+      time.sleep(delay)
+
+      delay *= 2
+
+  raise Exception("Failed to get a response from ChatGPT after 10 attempts.")
+
 
 class ChatBot:
   async def init(self, channel, client):
@@ -50,15 +76,7 @@ class ChatBot:
       else:
         prompt = f'{base_prompt} (utterly deranged and untrue):'
 
-      response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=prompt,
-        temperature=1,
-        max_tokens=500,
-        top_p=1,
-        frequency_penalty=0,
-        presence_penalty=0,
-      )
+      response = openai_call(prompt)
 
       print('response:', response)
 
