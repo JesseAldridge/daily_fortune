@@ -1,3 +1,3 @@
 export PYTHONPATH=~/openai_wrapper:$PYTHONPATH
-cd ~/fortune_discord
+cd ~/daily_fortune
 python _1_chat_bot.py
