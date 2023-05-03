@@ -1,44 +1,16 @@
 import os, json, glob, random, textwrap, threading, asyncio, subprocess
 
-import openai, chardet
+import chardet
 from discord.ext import tasks
 
+import openai_wrapper
+
 import _0_discord
-
-def openai_call(request_string):
-  errors = (openai.error.RateLimitError, openai.error.ServiceUnavailableError,
-            openai.error.APIError, openai.error.Timeout, ConnectionResetError)
-  delay = 1
-
-  for i in range(10):
-    try:
-      completion = openai.ChatCompletion.create(
-        model="gpt-4",
-        messages=[{
-          "role": "user",
-          "content": request_string
-        }]
-      )
-
-      return completion['choices'][0]['message']['content']
-
-    except errors as e:
-      print(f"Error: {e}")
-      print(f"Waiting for {delay} seconds before retrying...")
-      time.sleep(delay)
-
-      delay *= 2
-
-  raise Exception("Failed to get a response from ChatGPT after 10 attempts.")
-
 
 class ChatBot:
   async def init(self, channel, client):
     self.channel = channel
     self.client = client
-
-    with open(os.path.expanduser('~/open_ai.json')) as f:
-      openai.api_key = json.loads(f.read()).get('api_key')
 
     @tasks.loop(seconds=60 * 60 * 24)
     async def fortune_loop():
@@ -76,7 +48,7 @@ class ChatBot:
       else:
         prompt = f'{base_prompt} (utterly deranged and untrue):'
 
-      response = openai_call(prompt)
+      response = openai_wrapper.openai_call(prompt)
 
       print('response:', response)
 
