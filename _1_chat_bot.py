@@ -49,6 +49,8 @@ class ChatBot:
         prompt = f'{base_prompt} (utterly deranged and untrue):'
 
       response = openai_wrapper.openai_call(prompt)
+      if ':' in response:
+        response = response.split(':', 1)[1]
 
       print('response:', response)
 
