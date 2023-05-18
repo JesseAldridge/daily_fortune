@@ -1,6 +1,6 @@
 import os, json, glob, random, textwrap, threading, asyncio, subprocess, sys
 
-import chardet
+import chardet, nltk
 from discord.ext import tasks
 
 sys.path.append(os.path.expanduser('~/Dropbox/openai_wrapper'))
