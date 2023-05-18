@@ -1,8 +1,9 @@
-import os, json, glob, random, textwrap, threading, asyncio, subprocess
+import os, json, glob, random, textwrap, threading, asyncio, subprocess, sys
 
 import chardet
 from discord.ext import tasks
 
+sys.path.append(os.path.expanduser('~/Dropbox/openai_wrapper'))
 import openai_wrapper
 
 import _0_discord
@@ -48,14 +49,25 @@ class ChatBot:
       else:
         prompt = f'{base_prompt} (utterly deranged and untrue):'
 
-      response = openai_wrapper.openai_call(prompt)
-      if ':' in response:
-        response = response.split(':', 1)[1]
+      response_str = openai_wrapper.openai_call(prompt)
 
-      print('response:', response)
 
-      message = f"{base_prompt}:\n\n{response.strip() or ''}"
-      await self.channel.send(message)
+      if ':' in response_str:
+        response_str = response_str.split(':', 1)[1]
+
+      sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
+      sentences = sent_detector.tokenize(response_str.strip())
+
+      if 'deranged' in sentences[-1]:
+        sentences = sentences[:-1]
+
+      response_str = ' '.join(sentences)
+
+      print('response:', response_str)
+
+      message = f"{base_prompt}:\n\n{response_str.strip() or ''}"
+      print('message:', message)
+      # await self.channel.send(message)
     fortune_loop.start()
 
 def main():
