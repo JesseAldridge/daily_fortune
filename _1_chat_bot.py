@@ -51,12 +51,11 @@ class ChatBot:
 
       response_str = openai_wrapper.openai_call(prompt)
 
-
-      if ':' in response_str:
-        response_str = response_str.split(':', 1)[1]
-
       sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
       sentences = sent_detector.tokenize(response_str.strip())
+
+      if ':' in sentences[0]:
+        response_str = response_str.split(':', 1)[1]
 
       if 'deranged' in sentences[-1]:
         sentences = sentences[:-1]
