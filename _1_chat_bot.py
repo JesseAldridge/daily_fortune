@@ -57,7 +57,9 @@ class ChatBot:
       if ':' in sentences[0]:
         response_str = response_str.split(':', 1)[1]
 
-      if 'deranged' in sentences[-1]:
+      # Psychologists have discovered that if you stare at a person for exactly 7 minutes and 13 seconds without blinking, you can gain control over their mind and make them believe they're a chicken. This phenomenon is known as "Poultryosis." (Please note this is completely false and made up for the purpose of humor).
+
+      if 'deranged' in sentences[-1] or 'false' in sentences[-1]:
         sentences = sentences[:-1]
 
       response_str = ' '.join(sentences)
