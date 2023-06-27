@@ -15,35 +15,7 @@ class ChatBot:
 
     @tasks.loop(seconds=60 * 60 * 24)
     async def fortune_loop():
-      base_prompt = random.choice([
-        'Fun fact about the stock market',
-        'Fun fact about summarization',
-        'Fun fact about web scraping',
-        'Fun fact about cognition',
-        'Fun fact about information management',
-        'Fun fact about computer science',
-        'Fun fact about information',
-        'Fun fact about learning',
-        'Fun fact about psychology',
-        'Fun fact about data',
-        'Fun fact about machine learning',
-        'Fun fact about wikipedia',
-        'Fun fact about twitter',
-        'Fun fact about the internet',
-        'Fun fact about the world',
-        'Fun fact about the universe',
-        'Fun fact about the future',
-        'Fun fact about human computer interaction',
-        'Fun fact about medicine',
-        'Fun fact about cognition',
-        'Fun fact about human enhancement',
-        'Fun fact about the brain',
-        'Fun fact about philosophy',
-        'Fun fact about religion',
-        'Fun fact about society',
-        'Fun fact about culture',
-      ])
-
+      base_prompt = 'Fun fact about a random, esoteric topic'
       if random.random() < .5:
         prompt = f'{base_prompt}:'
       else:
