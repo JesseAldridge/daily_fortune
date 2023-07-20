@@ -42,8 +42,8 @@ class ChatBot:
 
       print('response:', response_str)
 
-      # message = f"{base_prompt}:\n\n{response_str.strip() or ''}"
-      # await self.channel.send(message)
+      message = f"{base_prompt}:\n\n{response_str.strip() or ''}"
+      await self.channel.send(message)
     fortune_loop.start()
 
 def main():
