@@ -30,16 +30,20 @@ class ChatBot:
         response_str = response_str.split(':', 1)[1]
 
       # Psychologists have discovered that if you stare at a person for exactly 7 minutes and 13 seconds without blinking, you can gain control over their mind and make them believe they're a chicken. This phenomenon is known as "Poultryosis." (Please note this is completely false and made up for the purpose of humor).
+      # Today, the flamingo society remains a strangely intriguing yet entirely untrue piece of trivia.
+      # Despite this being utterly false, wouldn't it be fascinating if it were true? Dolphins creating mermaids to protect their home - a whimsical notion indeed!
 
-      if 'deranged' in sentences[-1] or 'false' in sentences[-1]:
-        sentences = sentences[:-1]
+      for i in range(2):
+        for word in ('false', 'untrue', 'deranged', 'whimsical', 'evidence'):
+          if word in sentences[-1]:
+            sentences = sentences[:-1]
 
       response_str = ' '.join(sentences)
 
       print('response:', response_str)
 
-      message = f"{base_prompt}:\n\n{response_str.strip() or ''}"
-      await self.channel.send(message)
+      # message = f"{base_prompt}:\n\n{response_str.strip() or ''}"
+      # await self.channel.send(message)
     fortune_loop.start()
 
 def main():
