@@ -8,6 +8,10 @@ import openai_wrapper
 
 import _0_discord
 
+
+with open('words.txt') as f:
+  words = f.read().strip().splitlines()
+
 class ChatBot:
   async def init(self, channel, client):
     self.channel = channel
@@ -16,10 +20,11 @@ class ChatBot:
     @tasks.loop(seconds=60 * 60 * 24)
     async def fortune_loop():
       base_prompt = 'Fun fact about a random, esoteric topic'
+      with_word = f'{base_prompt}, inspired by the word "{random.choice(words)}"'
       if random.random() < .5:
-        prompt = f'{base_prompt}:'
+        prompt = f'{with_word}:'
       else:
-        prompt = f'{base_prompt} (utterly deranged and untrue):'
+        prompt = f'{with_word} (utterly deranged and untrue):'
 
       response_str = openai_wrapper.openai_call(prompt)
 
@@ -43,7 +48,8 @@ class ChatBot:
       print('response:', response_str)
 
       message = f"{base_prompt}:\n\n{response_str.strip() or ''}"
-      await self.channel.send(message)
+      if 'test' not in sys.argv:
+        await self.channel.send(message)
     fortune_loop.start()
 
 def main():
