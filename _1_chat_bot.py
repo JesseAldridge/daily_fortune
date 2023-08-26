@@ -34,12 +34,17 @@ class ChatBot:
       if ':' in sentences[0]:
         response_str = response_str.split(':', 1)[1]
 
+      # Bad sentences:
       # Psychologists have discovered that if you stare at a person for exactly 7 minutes and 13 seconds without blinking, you can gain control over their mind and make them believe they're a chicken. This phenomenon is known as "Poultryosis." (Please note this is completely false and made up for the purpose of humor).
       # Today, the flamingo society remains a strangely intriguing yet entirely untrue piece of trivia.
       # Despite this being utterly false, wouldn't it be fascinating if it were true? Dolphins creating mermaids to protect their home - a whimsical notion indeed!
+      # Despite being an imaginary civilization...
 
       for i in range(2):
-        for word in ('false', 'untrue', 'deranged', 'whimsical', 'evidence'):
+        for word in (
+          'false', 'untrue', 'deranged', 'whimsical', 'evidence', 'imaginary',
+          'fictional', 'fake', 'made up',
+        ):
           if word in sentences[-1]:
             sentences = sentences[:-1]
 
