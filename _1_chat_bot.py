@@ -43,7 +43,7 @@ class ChatBot:
       for i in range(2):
         for word in (
           'false', 'untrue', 'deranged', 'whimsical', 'evidence', 'imaginary',
-          'fictional', 'fake', 'made up',
+          'fictional', 'fake', 'made up', 'dubious', 'unfounded', 'unsubstantiated'
         ):
           if word in sentences[-1]:
             sentences = sentences[:-1]
