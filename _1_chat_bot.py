@@ -19,42 +19,16 @@ class ChatBot:
 
     @tasks.loop(seconds=60 * 60 * 24)
     async def fortune_loop():
-      base_prompt = 'Fun fact about a random, esoteric topic'
-      with_word = f'{base_prompt}, inspired by the word "{random.choice(words)}"'
-      if random.random() < .5:
-        prompt = f'{with_word}:'
-      else:
-        prompt = f'{with_word} (utterly deranged and untrue):'
+      prompt = (
+        f'Fun fact about a random, esoteric topic, inspired by the word "{random.choice(words)}". ' +
+        "User 20 words or fewer."
+      )
 
       response_str = openai_wrapper.openai_call(prompt)
 
-      sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
-      sentences = sent_detector.tokenize(response_str.strip())
-
-      if ':' in sentences[0]:
-        response_str = response_str.split(':', 1)[1]
-
-      # Bad sentences:
-      # Psychologists have discovered that if you stare at a person for exactly 7 minutes and 13 seconds without blinking, you can gain control over their mind and make them believe they're a chicken. This phenomenon is known as "Poultryosis." (Please note this is completely false and made up for the purpose of humor).
-      # Today, the flamingo society remains a strangely intriguing yet entirely untrue piece of trivia.
-      # Despite this being utterly false, wouldn't it be fascinating if it were true? Dolphins creating mermaids to protect their home - a whimsical notion indeed!
-      # Despite being an imaginary civilization...
-
-      for i in range(2):
-        for word in (
-          'false', 'untrue', 'deranged', 'whimsical', 'evidence', 'imaginary',
-          'fictional', 'fake', 'made up', 'dubious', 'unfounded', 'unsubstantiated'
-        ):
-          if word in sentences[-1]:
-            sentences = sentences[:-1]
-
-      response_str = ' '.join(sentences)
-
       print('response:', response_str)
-
-      message = f"{base_prompt}:\n\n{response_str.strip() or ''}"
       if 'test' not in sys.argv:
-        await self.channel.send(message)
+        await self.channel.send(response_str)
     fortune_loop.start()
 
 def main():
